@@ -223,7 +223,7 @@ export default function Admin() {
     );
   }
 
-  const renderFileUploader = (file: File | null, imageUrl: string, setFile: (f: File | null) => void, setFormDataUrl: (url: string) => void, fileInputRef: React.RefObject<HTMLInputElement>) => {
+  const renderFileUploader = (file: File | null, imageUrl: string, setFile: (f: File | null) => void, setFormDataUrl: (url: string) => void, fileInputRef: React.RefObject<HTMLInputElement | null>) => {
     const handleDragOver = (e: React.DragEvent) => e.preventDefault();
     const handleDrop = (e: React.DragEvent) => {
       e.preventDefault();
