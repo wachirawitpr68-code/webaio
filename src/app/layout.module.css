@@ -9,7 +9,7 @@
 }
 
 .navContainer {
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 0 auto;
   padding: 0 1rem;
   display: flex;
@@ -28,7 +28,7 @@
 }
 
 .uniLogo {
-  height: 40px;
+  height: 65px;
   width: auto;
   object-fit: contain;
 }
