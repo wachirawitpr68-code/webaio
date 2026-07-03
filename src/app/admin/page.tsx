@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
+import { useLanguage } from "../../context/LanguageContext";
 
 type Tab = 'researchers' | 'news';
 
@@ -157,24 +158,26 @@ export default function Admin() {
   };
 
 
+  const { t } = useLanguage();
+
   if (!isLoggedIn) {
     return (
-      <div style={{ padding: '5rem 1rem', maxWidth: '500px', margin: '0 auto', minHeight: '60vh' }}>
-        <h1 style={{ fontSize: '2.5rem', marginBottom: '2rem', textAlign: 'center', color: 'var(--color-primary)' }}>เข้าสู่ระบบ Admin</h1>
-        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', background: 'var(--color-gray-50)', padding: '2.5rem', borderRadius: '12px', border: '1px solid var(--color-gray-200)' }}>
+      <div style={{ padding: '8rem 1rem', maxWidth: '600px', margin: '0 auto', minHeight: '70vh' }}>
+        <h1 style={{ fontSize: '3.5rem', marginBottom: '3rem', textAlign: 'center', color: 'var(--color-primary)' }}>{t('admin.login.title')}</h1>
+        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '2rem', background: 'var(--color-gray-50)', padding: '3.5rem', borderRadius: '16px', border: '1px solid var(--color-gray-200)', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
           <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>รหัสผ่าน</label>
+            <label style={{ display: 'block', marginBottom: '1rem', fontWeight: 'bold', fontSize: '1.2rem' }}>{t('admin.login.password')}</label>
             <input 
               type="password" 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="ใส่รหัสผ่าน..." 
-              style={{ width: '100%', padding: '1rem', border: '1px solid #ccc', borderRadius: '8px' }} 
+              placeholder={t('admin.login.placeholder')} 
+              style={{ width: '100%', padding: '1.2rem', border: '1px solid #ccc', borderRadius: '8px', fontSize: '1.2rem' }} 
             />
           </div>
-          {error && <p style={{ color: 'red', fontSize: '0.9rem' }}>{error}</p>}
-          <button type="submit" style={{ marginTop: '0.5rem', width: '100%', padding: '1rem', fontSize: '1.1rem', backgroundColor: 'var(--color-primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}>
-            เข้าสู่ระบบ
+          {error && <p style={{ color: 'red', fontSize: '1.1rem' }}>{error}</p>}
+          <button type="submit" style={{ marginTop: '1rem', width: '100%', padding: '1.2rem', fontSize: '1.3rem', backgroundColor: 'var(--color-primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', transition: 'background-color 0.2s' }}>
+            {t('admin.login.button')}
           </button>
         </form>
       </div>
@@ -227,10 +230,10 @@ export default function Admin() {
               <input type="text" placeholder="ลิงก์รูปภาพ URL" value={resFormData.image_url} onChange={e => setResFormData({...resFormData, image_url: e.target.value})} style={inputStyle} disabled={loading} />
               
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                <button onClick={handleSaveRes} className="btn" style={{ flex: 1, backgroundColor: 'var(--color-primary)', color: 'white' }} disabled={loading}>
+                <button onClick={handleSaveRes} className="btn" style={{ flex: 1, backgroundColor: 'var(--color-primary)', color: 'white', padding: '1.2rem', fontSize: '1.2rem', fontWeight: 'bold' }} disabled={loading}>
                   {loading ? "กำลังบันทึก..." : "บันทึก"}
                 </button>
-                {editingResId && <button onClick={resetResForm} className="btn" style={{ background: '#ccc' }} disabled={loading}>ยกเลิก</button>}
+                {editingResId && <button onClick={resetResForm} className="btn" style={{ background: '#ccc', padding: '1.2rem', fontSize: '1.2rem', fontWeight: 'bold' }} disabled={loading}>ยกเลิก</button>}
               </div>
             </div>
           ) : (
@@ -242,10 +245,10 @@ export default function Admin() {
               <input type="text" placeholder="ลิงก์รูปภาพประกอบ URL" value={newsFormData.image_url} onChange={e => setNewsFormData({...newsFormData, image_url: e.target.value})} style={inputStyle} disabled={loading} />
               
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                <button onClick={handleSaveNews} className="btn" style={{ flex: 1, backgroundColor: 'var(--color-primary)', color: 'white' }} disabled={loading}>
+                <button onClick={handleSaveNews} className="btn" style={{ flex: 1, backgroundColor: 'var(--color-primary)', color: 'white', padding: '1.2rem', fontSize: '1.2rem', fontWeight: 'bold' }} disabled={loading}>
                   {loading ? "กำลังบันทึก..." : "บันทึก"}
                 </button>
-                {editingNewsId && <button onClick={resetNewsForm} className="btn" style={{ background: '#ccc' }} disabled={loading}>ยกเลิก</button>}
+                {editingNewsId && <button onClick={resetNewsForm} className="btn" style={{ background: '#ccc', padding: '1.2rem', fontSize: '1.2rem', fontWeight: 'bold' }} disabled={loading}>ยกเลิก</button>}
               </div>
             </div>
           )}
@@ -302,8 +305,8 @@ export default function Admin() {
 
 const inputStyle = {
   width: '100%',
-  padding: '0.8rem',
+  padding: '1rem',
   border: '1px solid #ccc',
   borderRadius: '8px',
-  fontSize: '0.95rem'
+  fontSize: '1.1rem'
 };

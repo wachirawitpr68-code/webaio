@@ -48,22 +48,22 @@ export default function Home() {
       {/* About Section */}
       <section className={styles.aboutSection}>
         <div className="container">
-          <h2 className={styles.sectionTitle}>เกี่ยวกับ AIO LAB</h2>
+          <h2 className={styles.sectionTitle}>{t('about.title')}</h2>
           <div className={styles.featuresGrid}>
             <div className={styles.featureCard}>
               <div className={styles.featureIcon}>🔬</div>
-              <h3>งานวิจัยชั้นนำ</h3>
-              <p>ผลักดันขีดจำกัดของเทคโนโลยีด้วยระเบียบวิธีวิจัยและนวัตกรรมที่ทันสมัยระดับสากล</p>
+              <h3>{t('about.card1.title')}</h3>
+              <p style={{ fontSize: '1.1rem', lineHeight: '1.6' }}>{t('about.card1.desc')}</p>
             </div>
             <div className={styles.featureCard}>
               <div className={styles.featureIcon}>👥</div>
-              <h3>ทีมผู้เชี่ยวชาญ</h3>
-              <p>ศูนย์รวมนักวิจัย คณาจารย์ และนักศึกษาผู้มีวิสัยทัศน์แห่งมหาวิทยาลัยอุบลราชธานี</p>
+              <h3>{t('about.card2.title')}</h3>
+              <p style={{ fontSize: '1.1rem', lineHeight: '1.6' }}>{t('about.card2.desc')}</p>
             </div>
             <div className={styles.featureCard}>
               <div className={styles.featureIcon}>🌍</div>
-              <h3>สร้างผลกระทบต่อสังคม</h3>
-              <p>เปลี่ยนการค้นพบทางวิชาการให้เป็นแอปพลิเคชันที่ใช้งานได้จริงและเป็นประโยชน์ต่อสังคม</p>
+              <h3>{t('about.card3.title')}</h3>
+              <p style={{ fontSize: '1.1rem', lineHeight: '1.6' }}>{t('about.card3.desc')}</p>
             </div>
           </div>
         </div>
