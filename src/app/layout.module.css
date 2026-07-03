@@ -1,0 +1,88 @@
+.navbar {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  padding: 1rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.navContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-decoration: none;
+}
+
+.logoTriangle {
+  color: var(--color-primary-red);
+  font-size: 1.8rem;
+  margin-right: 4px;
+}
+
+.logoLine {
+  color: var(--color-primary-yellow);
+  font-weight: 900;
+  margin-right: 4px;
+}
+
+.logoCircle {
+  color: var(--color-primary-blue);
+  font-size: 2rem;
+  margin-right: 8px;
+  line-height: 0.8;
+}
+
+.logoText {
+  color: var(--color-white);
+  background-color: var(--color-black);
+  padding: 2px 6px;
+  margin-top: 2px;
+}
+
+.navLinks {
+  display: flex;
+  gap: 2rem;
+}
+
+.navLinks a {
+  color: var(--color-white);
+  font-weight: 500;
+  transition: color 0.2s ease;
+  font-size: 1rem;
+}
+
+.navLinks a:hover {
+  color: var(--color-primary-yellow);
+}
+
+.mainContent {
+  min-height: calc(100vh - 140px);
+}
+
+.footer {
+  background-color: var(--color-gray-100);
+  padding: 2rem 0;
+  text-align: center;
+  border-top: 4px solid var(--color-primary-blue);
+}
+
+.footerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  color: var(--color-gray-800);
+  font-weight: 500;
+}

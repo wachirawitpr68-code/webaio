@@ -1,0 +1,118 @@
+.container {
+  width: 100%;
+}
+
+.header {
+  background-color: var(--color-black);
+  color: var(--color-white);
+  padding: 4rem 1rem;
+  text-align: center;
+}
+
+.title {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.title::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  background-color: var(--color-primary-yellow);
+  margin: 1rem auto 0;
+}
+
+.subtitle {
+  color: #aaa;
+  font-size: 1.2rem;
+}
+
+.researchersList {
+  padding: 5rem 0;
+  background-color: var(--color-gray-100);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.card {
+  background-color: var(--color-white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease;
+  border-bottom: 4px solid var(--color-primary-red);
+}
+
+.card:nth-child(2n) {
+  border-bottom-color: var(--color-primary-blue);
+}
+
+.card:nth-child(3n) {
+  border-bottom-color: var(--color-primary-yellow);
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.cardImage {
+  height: 250px;
+  overflow: hidden;
+}
+
+.cardImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cardContent {
+  padding: 2rem;
+}
+
+.name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.position {
+  color: var(--color-primary-blue);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.bio {
+  color: var(--color-gray-800);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.cardFooter {
+  border-top: 1px solid var(--color-gray-200);
+  padding-top: 1rem;
+}
+
+.scholarLink {
+  display: inline-flex;
+  align-items: center;
+  color: #4285F4;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.scholarLink:hover {
+  color: #1a0dab;
+  text-decoration: underline;
+}
+
+.scholarIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.5rem;
+}
