@@ -1,8 +1,10 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import styles from "./page.module.css";
 
-// คุณสามารถเพิ่มหรือแก้ไขข้อมูลนักวิจัยได้โดยตรงที่ตัวแปรนี้ครับ
-// เพียงแค่คัดลอก { ... } แล้วเปลี่ยนข้อมูลข้างใน
-const researchersData = [
+// ข้อมูลเริ่มต้น (Default)
+const defaultResearchers = [
   {
     id: 1,
     name: "ผศ.ดร. สมชาย มุ่งมั่น",
@@ -30,6 +32,16 @@ const researchersData = [
 ];
 
 export default function Researchers() {
+  const [researchers, setResearchers] = useState(defaultResearchers);
+
+  // ดึงข้อมูลจาก Local Storage (ที่แก้ไขมาจากหน้า Admin)
+  useEffect(() => {
+    const saved = localStorage.getItem("aio_researchers");
+    if (saved) {
+      setResearchers(JSON.parse(saved));
+    }
+  }, []);
+
   return (
     <div className={styles.container}>
       <section className={styles.header}>
@@ -40,10 +52,10 @@ export default function Researchers() {
       <section className={styles.researchersList}>
         <div className="container">
           <div className={styles.grid}>
-            {researchersData.map((researcher) => (
+            {researchers.map((researcher) => (
               <div key={researcher.id} className={styles.card}>
                 <div className={styles.cardImage}>
-                  <img src={researcher.imageUrl} alt={researcher.name} />
+                  <img src={researcher.imageUrl || `https://ui-avatars.com/api/?name=${researcher.name}&background=eee&color=000`} alt={researcher.name} />
                 </div>
                 <div className={styles.cardContent}>
                   <h3 className={styles.name}>{researcher.name}</h3>

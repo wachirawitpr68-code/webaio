@@ -29,6 +29,7 @@ export default function RootLayout({
               <Link href="/researchers">นักวิจัย</Link>
               <Link href="/news">ข่าวสาร</Link>
               <Link href="/contact">ติดต่อเรา</Link>
+              <Link href="/admin" className={styles.adminLink}>เข้าสู่ระบบ Admin</Link>
             </div>
           </div>
         </nav>
