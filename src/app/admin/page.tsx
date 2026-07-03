@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useLanguage } from "../../context/LanguageContext";
 
@@ -23,6 +23,8 @@ export default function Admin() {
     bio_th: "", bio_en: "", 
     scholar_link: "", image_url: ""
   });
+  const [resFile, setResFile] = useState<File | null>(null);
+  const resFileInputRef = useRef<HTMLInputElement>(null);
 
   // News state
   const [news, setNews] = useState<any[]>([]);
@@ -32,6 +34,8 @@ export default function Admin() {
     content_th: "", content_en: "",
     image_url: ""
   });
+  const [newsFile, setNewsFile] = useState<File | null>(null);
+  const newsFileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -64,16 +68,39 @@ export default function Admin() {
     }
   };
 
+  const uploadFile = async (file: File): Promise<string | null> => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random()}.${fileExt}`;
+    const filePath = `${fileName}`;
+    
+    const { error: uploadError } = await supabase.storage.from('images').upload(filePath, file);
+    if (uploadError) {
+      console.error('Upload error:', uploadError);
+      throw new Error('Failed to upload image.');
+    }
+    
+    const { data } = supabase.storage.from('images').getPublicUrl(filePath);
+    return data.publicUrl;
+  };
+
   // --- Researchers Handlers ---
   const handleSaveRes = async () => {
     if (!resFormData.name_th) return alert("กรุณาใส่ชื่อนักวิจัย (TH)");
     setLoading(true);
     try {
+      let finalImageUrl = resFormData.image_url;
+      if (resFile) {
+        const url = await uploadFile(resFile);
+        if (url) finalImageUrl = url;
+      }
+
+      const payload = { ...resFormData, image_url: finalImageUrl };
+
       if (editingResId) {
-        const { error } = await supabase.from('researchers').update(resFormData).eq('id', editingResId);
+        const { error } = await supabase.from('researchers').update(payload).eq('id', editingResId);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from('researchers').insert([resFormData]);
+        const { error } = await supabase.from('researchers').insert([payload]);
         if (error) throw error;
       }
       await fetchResearchers();
@@ -104,11 +131,13 @@ export default function Admin() {
       bio_th: r.bio_th || r.bio || "", bio_en: r.bio_en || "",
       scholar_link: r.scholar_link || "", image_url: r.image_url || ""
     });
+    setResFile(null);
   };
 
   const resetResForm = () => {
     setEditingResId(null);
     setResFormData({ name_th: "", name_en: "", position_th: "", position_en: "", bio_th: "", bio_en: "", scholar_link: "", image_url: "" });
+    setResFile(null);
   };
 
   // --- News Handlers ---
@@ -116,11 +145,19 @@ export default function Admin() {
     if (!newsFormData.title_th) return alert("กรุณาใส่หัวข้อข่าว (TH)");
     setLoading(true);
     try {
+      let finalImageUrl = newsFormData.image_url;
+      if (newsFile) {
+        const url = await uploadFile(newsFile);
+        if (url) finalImageUrl = url;
+      }
+
+      const payload = { ...newsFormData, image_url: finalImageUrl };
+
       if (editingNewsId) {
-        const { error } = await supabase.from('news').update(newsFormData).eq('id', editingNewsId);
+        const { error } = await supabase.from('news').update(payload).eq('id', editingNewsId);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from('news').insert([newsFormData]);
+        const { error } = await supabase.from('news').insert([payload]);
         if (error) throw error;
       }
       await fetchNews();
@@ -150,11 +187,13 @@ export default function Admin() {
       content_th: n.content_th || n.content || "", content_en: n.content_en || "",
       image_url: n.image_url || ""
     });
+    setNewsFile(null);
   };
 
   const resetNewsForm = () => {
     setEditingNewsId(null);
     setNewsFormData({ title_th: "", title_en: "", content_th: "", content_en: "", image_url: "" });
+    setNewsFile(null);
   };
 
 
@@ -183,6 +222,68 @@ export default function Admin() {
       </div>
     );
   }
+
+  const renderFileUploader = (file: File | null, imageUrl: string, setFile: (f: File | null) => void, setFormDataUrl: (url: string) => void, fileInputRef: React.RefObject<HTMLInputElement>) => {
+    const handleDragOver = (e: React.DragEvent) => e.preventDefault();
+    const handleDrop = (e: React.DragEvent) => {
+      e.preventDefault();
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        setFile(e.dataTransfer.files[0]);
+        setFormDataUrl(""); // clear existing url
+      }
+    };
+    
+    return (
+      <div 
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+        style={{
+          border: '2px dashed var(--color-gray-200)',
+          borderRadius: '8px',
+          padding: '2rem',
+          textAlign: 'center',
+          backgroundColor: 'white',
+          cursor: 'pointer',
+          position: 'relative',
+          transition: 'border-color 0.3s ease'
+        }}
+        onClick={() => fileInputRef.current?.click()}
+      >
+        <input 
+          type="file" 
+          accept="image/*" 
+          ref={fileInputRef}
+          style={{ display: 'none' }} 
+          onChange={(e) => {
+            if (e.target.files && e.target.files[0]) {
+              setFile(e.target.files[0]);
+              setFormDataUrl("");
+            }
+          }} 
+        />
+        {(file || imageUrl) ? (
+          <div>
+            <img 
+              src={file ? URL.createObjectURL(file) : imageUrl} 
+              alt="Preview" 
+              style={{ maxWidth: '100%', maxHeight: '200px', objectFit: 'contain', borderRadius: '8px', marginBottom: '1rem' }} 
+            />
+            <p style={{ color: 'var(--color-secondary)', fontSize: '0.9rem' }}>
+              คลิกหรือลากไฟล์มาวางเพื่อเปลี่ยนรูปภาพ
+            </p>
+          </div>
+        ) : (
+          <div style={{ color: 'var(--color-secondary)' }}>
+            <svg style={{ width: '40px', height: '40px', marginBottom: '1rem', color: 'var(--color-primary)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+            </svg>
+            <p style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>คลิกเพื่อเลือกไฟล์ หรือ ลากไฟล์มาวางที่นี่</p>
+            <p style={{ fontSize: '0.9rem' }}>รองรับไฟล์ JPG, PNG, GIF</p>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div style={{ padding: '3rem 1rem', maxWidth: '1200px', margin: '0 auto' }}>
@@ -227,8 +328,12 @@ export default function Admin() {
               <textarea placeholder="ประวัติย่อ (TH)" rows={3} value={resFormData.bio_th} onChange={e => setResFormData({...resFormData, bio_th: e.target.value})} style={inputStyle} disabled={loading} />
               <textarea placeholder="Bio (EN)" rows={3} value={resFormData.bio_en} onChange={e => setResFormData({...resFormData, bio_en: e.target.value})} style={inputStyle} disabled={loading} />
               <input type="text" placeholder="ลิงก์ Google Scholar" value={resFormData.scholar_link} onChange={e => setResFormData({...resFormData, scholar_link: e.target.value})} style={inputStyle} disabled={loading} />
-              <input type="text" placeholder="ลิงก์รูปภาพ URL" value={resFormData.image_url} onChange={e => setResFormData({...resFormData, image_url: e.target.value})} style={inputStyle} disabled={loading} />
               
+              <div style={{ marginTop: '0.5rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>รูปภาพนักวิจัย</label>
+                {renderFileUploader(resFile, resFormData.image_url, setResFile, (url) => setResFormData({...resFormData, image_url: url}), resFileInputRef)}
+              </div>
+
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
                 <button onClick={handleSaveRes} className="btn" style={{ flex: 1, backgroundColor: 'var(--color-primary)', color: 'white', padding: '1.2rem', fontSize: '1.2rem', fontWeight: 'bold' }} disabled={loading}>
                   {loading ? "กำลังบันทึก..." : "บันทึก"}
@@ -242,7 +347,11 @@ export default function Admin() {
               <input type="text" placeholder="Title (EN)" value={newsFormData.title_en} onChange={e => setNewsFormData({...newsFormData, title_en: e.target.value})} style={inputStyle} disabled={loading} />
               <textarea placeholder="เนื้อหาข่าวสั้นๆ (TH)" rows={4} value={newsFormData.content_th} onChange={e => setNewsFormData({...newsFormData, content_th: e.target.value})} style={inputStyle} disabled={loading} />
               <textarea placeholder="Content (EN)" rows={4} value={newsFormData.content_en} onChange={e => setNewsFormData({...newsFormData, content_en: e.target.value})} style={inputStyle} disabled={loading} />
-              <input type="text" placeholder="ลิงก์รูปภาพประกอบ URL" value={newsFormData.image_url} onChange={e => setNewsFormData({...newsFormData, image_url: e.target.value})} style={inputStyle} disabled={loading} />
+              
+              <div style={{ marginTop: '0.5rem' }}>
+                <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>รูปภาพประกอบข่าวสาร</label>
+                {renderFileUploader(newsFile, newsFormData.image_url, setNewsFile, (url) => setNewsFormData({...newsFormData, image_url: url}), newsFileInputRef)}
+              </div>
               
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
                 <button onClick={handleSaveNews} className="btn" style={{ flex: 1, backgroundColor: 'var(--color-primary)', color: 'white', padding: '1.2rem', fontSize: '1.2rem', fontWeight: 'bold' }} disabled={loading}>
