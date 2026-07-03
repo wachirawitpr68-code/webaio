@@ -4,8 +4,8 @@ import Link from "next/link";
 import styles from "./layout.module.css";
 
 export const metadata: Metadata = {
-  title: "AIO LAB - Research Website",
-  description: "Welcome to AIO LAB, where we build the future.",
+  title: "AIO LAB - มหาวิทยาลัยอุบลราชธานี",
+  description: "กลุ่มวิจัย AIO LAB มหาวิทยาลัยอุบลราชธานี นำเสนองานวิจัยและนวัตกรรมใหม่ๆ",
 };
 
 export default function RootLayout({
@@ -14,7 +14,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="th">
       <body>
         <nav className={styles.navbar}>
           <div className={styles.navContainer}>
@@ -25,10 +25,10 @@ export default function RootLayout({
               <span className={styles.logoText}>LAB</span>
             </Link>
             <div className={styles.navLinks}>
-              <Link href="/">Home</Link>
-              <Link href="/researchers">Researchers</Link>
-              <Link href="/news">News</Link>
-              <Link href="/contact">Contact</Link>
+              <Link href="/">หน้าแรก</Link>
+              <Link href="/researchers">นักวิจัย</Link>
+              <Link href="/news">ข่าวสาร</Link>
+              <Link href="/contact">ติดต่อเรา</Link>
             </div>
           </div>
         </nav>
@@ -37,7 +37,7 @@ export default function RootLayout({
         </main>
         <footer className={styles.footer}>
           <div className={styles.footerContent}>
-            <p>&copy; {new Date().getFullYear()} AIO LAB. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} AIO LAB มหาวิทยาลัยอุบลราชธานี. สงวนลิขสิทธิ์.</p>
           </div>
         </footer>
       </body>

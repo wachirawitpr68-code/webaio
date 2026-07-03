@@ -8,20 +8,20 @@ export default function Home() {
       <section className={styles.hero}>
         <div className={styles.heroContent}>
           <h1 className={styles.title}>
-            <span className={styles.highlightRed}>Innovate.</span>{" "}
-            <span className={styles.highlightYellow}>Research.</span>{" "}
-            <span className={styles.highlightBlue}>Discover.</span>
+            <span className={styles.highlightRed}>นวัตกรรม.</span>{" "}
+            <span className={styles.highlightYellow}>วิจัย.</span>{" "}
+            <span className={styles.highlightBlue}>ค้นพบ.</span>
           </h1>
           <p className={styles.subtitle}>
-            Welcome to AIO LAB. We are a premier research group dedicated to advancing technology and science. 
-            Explore our cutting-edge research, meet our experts, and discover our latest activities.
+            ยินดีต้อนรับสู่กลุ่มวิจัย AIO LAB แห่งมหาวิทยาลัยอุบลราชธานี เรามุ่งมั่นพัฒนางานวิจัยและนวัตกรรมใหม่ๆ 
+            เพื่อต่อยอดองค์ความรู้ทางวิทยาศาสตร์และเทคโนโลยีสู่สังคม
           </p>
           <div className={styles.heroActions}>
             <Link href="/researchers" className="btn btn-primary">
-              Meet Our Researchers
+              รู้จักกับนักวิจัยของเรา
             </Link>
             <Link href="/news" className="btn btn-warning">
-              Latest News
+              ข่าวสารและกิจกรรม
             </Link>
           </div>
         </div>
@@ -35,22 +35,22 @@ export default function Home() {
       {/* About Section */}
       <section className={styles.aboutSection}>
         <div className="container">
-          <h2 className={styles.sectionTitle}>About AIO LAB</h2>
+          <h2 className={styles.sectionTitle}>เกี่ยวกับ AIO LAB</h2>
           <div className={styles.featuresGrid}>
             <div className={styles.featureCard}>
               <div className={styles.featureIconRed}>&#9651;</div>
-              <h3>Pioneering Research</h3>
-              <p>Pushing the boundaries of what is possible with state-of-the-art technology and methodology.</p>
+              <h3>งานวิจัยชั้นนำ</h3>
+              <p>ผลักดันขีดจำกัดของเทคโนโลยีด้วยระเบียบวิธีวิจัยและนวัตกรรมที่ทันสมัยระดับสากล</p>
             </div>
             <div className={styles.featureCard}>
               <div className={styles.featureIconYellow}>|</div>
-              <h3>Expert Team</h3>
-              <p>A diverse group of world-class researchers, engineers, and scientists collaborating together.</p>
+              <h3>ทีมผู้เชี่ยวชาญ</h3>
+              <p>ศูนย์รวมนักวิจัย คณาจารย์ และนักศึกษาผู้มีวิสัยทัศน์แห่งมหาวิทยาลัยอุบลราชธานี</p>
             </div>
             <div className={styles.featureCard}>
               <div className={styles.featureIconBlue}>&#9675;</div>
-              <h3>Global Impact</h3>
-              <p>Translating academic discoveries into real-world applications that benefit society.</p>
+              <h3>สร้างผลกระทบต่อสังคม</h3>
+              <p>เปลี่ยนการค้นพบทางวิชาการให้เป็นแอปพลิเคชันที่ใช้งานได้จริงและเป็นประโยชน์ต่อสังคม</p>
             </div>
           </div>
         </div>
