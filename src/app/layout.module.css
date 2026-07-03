@@ -24,6 +24,20 @@
   font-weight: 800;
   letter-spacing: 2px;
   text-decoration: none;
+  gap: 15px;
+}
+
+.uniLogo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+.aioLogo {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  border-left: 2px solid var(--color-gray-800);
 }
 
 .logoTriangle {

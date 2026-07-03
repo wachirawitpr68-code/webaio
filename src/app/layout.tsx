@@ -19,10 +19,14 @@ export default function RootLayout({
         <nav className={styles.navbar}>
           <div className={styles.navContainer}>
             <Link href="/" className={styles.logo}>
-              <span className={styles.logoTriangle}>&#9651;</span>
-              <span className={styles.logoLine}>|</span>
-              <span className={styles.logoCircle}>&#9675;</span>
-              <span className={styles.logoText}>LAB</span>
+              <img src="/ubu-logo.png" alt="Ubon Ratchathani University" className={styles.uniLogo} />
+              <img src="/eng-ubu-logo.png" alt="Faculty of Engineering UBU" className={styles.uniLogo} />
+              <div className={styles.aioLogo}>
+                <span className={styles.logoTriangle}>&#9651;</span>
+                <span className={styles.logoLine}>|</span>
+                <span className={styles.logoCircle}>&#9675;</span>
+                <span className={styles.logoText}>LAB</span>
+              </div>
             </Link>
             <div className={styles.navLinks}>
               <Link href="/">หน้าแรก</Link>
