@@ -6,7 +6,7 @@ import { supabase } from "../../lib/supabaseClient";
 import { useLanguage } from "../../context/LanguageContext";
 
 export default function Researchers() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const [researchers, setResearchers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -46,12 +46,18 @@ export default function Researchers() {
               {researchers.map((researcher) => (
                 <div key={researcher.id} className={styles.card}>
                   <div className={styles.cardImage}>
-                    <img src={researcher.image_url || `https://ui-avatars.com/api/?name=${researcher.name}&background=eee&color=000`} alt={researcher.name} />
+                    <img src={researcher.image_url || `https://ui-avatars.com/api/?name=${researcher.name_en || researcher.name}&background=eee&color=000`} alt={researcher.name_th || researcher.name} />
                   </div>
                   <div className={styles.cardContent}>
-                    <h3 className={styles.name}>{researcher.name}</h3>
-                    <p className={styles.position}>{researcher.position}</p>
-                    <p className={styles.bio}>{researcher.bio}</p>
+                    <h3 className={styles.name}>
+                      {language === 'en' ? (researcher.name_en || researcher.name) : (researcher.name_th || researcher.name)}
+                    </h3>
+                    <p className={styles.position}>
+                      {language === 'en' ? (researcher.position_en || researcher.position) : (researcher.position_th || researcher.position)}
+                    </p>
+                    <p className={styles.bio}>
+                      {language === 'en' ? (researcher.bio_en || researcher.bio) : (researcher.bio_th || researcher.bio)}
+                    </p>
                     
                     <div className={styles.cardFooter}>
                       {researcher.scholar_link && (
