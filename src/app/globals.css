@@ -1,14 +1,22 @@
 :root {
+  /* Primary Professional Colors */
+  --color-primary: #0F172A; /* Navy Blue */
+  --color-secondary: #334155; /* Slate */
+  --color-accent: #2563EB; /* Bright Blue for active/hover */
+  
+  /* Original Accent Colors (used sparingly) */
   --color-primary-red: #d32f2f;
   --color-primary-yellow: #fbc02d;
-  --color-primary-blue: #1976d2;
-  --color-black: #111111;
-  --color-white: #ffffff;
-  --color-gray-100: #f5f5f5;
-  --color-gray-200: #e5e5e5;
-  --color-gray-800: #333333;
   
-  --font-family-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Neutrals */
+  --color-black: #0f172a; /* Slate 900 */
+  --color-white: #ffffff;
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-800: #1e293b;
+  
+  --font-family-sans: var(--font-prompt), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 * {
