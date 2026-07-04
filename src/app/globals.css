@@ -94,3 +94,31 @@ a {
 .animate-fade-in {
   animation: fadeIn 0.8s ease-out forwards;
 }
+
+/* Responsive Utilities */
+.responsive-grid-admin {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+}
+
+.responsive-grid-contact {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 4rem;
+}
+
+@media (max-width: 768px) {
+  .responsive-grid-admin {
+    grid-template-columns: 1fr;
+  }
+  
+  .responsive-grid-contact {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .section {
+    padding: 2rem 0;
+  }
+}

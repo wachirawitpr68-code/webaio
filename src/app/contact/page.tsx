@@ -8,7 +8,7 @@ export default function Contact() {
   return (
     <div style={{ padding: '5rem 1rem', maxWidth: '1200px', margin: '0 auto', minHeight: '70vh' }}>
       <h1 style={{ fontSize: '3rem', marginBottom: '3rem', color: 'var(--color-primary)' }}>{t('contact.title')}</h1>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '4rem' }}>
+      <div className="responsive-grid-contact">
         
         {/* Contact Info */}
         <div>

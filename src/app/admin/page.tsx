@@ -293,7 +293,7 @@ export default function Admin() {
       </div>
       
       {/* Tabs */}
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '2rem', borderBottom: '2px solid var(--color-gray-200)' }}>
+      <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '2rem', borderBottom: '2px solid var(--color-gray-200)' }}>
         <button 
           onClick={() => setActiveTab('researchers')} 
           style={{ padding: '1rem 2rem', border: 'none', background: 'none', cursor: 'pointer', fontSize: '1.1rem', fontWeight: 'bold', borderBottom: activeTab === 'researchers' ? '4px solid var(--color-primary)' : '4px solid transparent', color: activeTab === 'researchers' ? 'var(--color-primary)' : 'var(--color-secondary)' }}
@@ -308,7 +308,7 @@ export default function Admin() {
         </button>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '2rem' }}>
+      <div className="responsive-grid-admin">
         {/* Form */}
         <div style={{ background: 'var(--color-gray-50)', padding: '2rem', borderRadius: '12px', alignSelf: 'start', border: '1px solid var(--color-gray-200)' }}>
           <h2 style={{ marginBottom: '1.5rem', color: 'var(--color-primary)' }}>
