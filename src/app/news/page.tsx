@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useLanguage } from "../../context/LanguageContext";
+import Link from "next/link";
 
 export default function News() {
   const { t, language } = useLanguage();
@@ -43,35 +44,51 @@ export default function News() {
           gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
         }}>
           {newsList.map((item) => (
-            <div key={item.id} style={{ 
-              display: 'flex',
-              flexDirection: 'column',
-              border: '1px solid var(--color-gray-200)', 
-              borderRadius: '12px', 
-              overflow: 'hidden',
-              backgroundColor: 'white',
-              boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
-              transition: 'transform 0.3s ease, box-shadow 0.3s ease'
-            }}>
-              {item.image_url && (
-                <div style={{ height: '200px', overflow: 'hidden' }}>
-                  <img src={item.image_url} alt="News" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <Link href={`/news/${item.id}`} key={item.id} style={{ textDecoration: 'none', color: 'inherit' }}>
+              <div style={{ 
+                display: 'flex',
+                flexDirection: 'column',
+                border: '1px solid var(--color-gray-200)', 
+                borderRadius: '12px', 
+                overflow: 'hidden',
+                backgroundColor: 'white',
+                boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                height: '100%',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-5px)';
+                e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.1)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.05)';
+              }}
+              >
+                {item.image_url && (
+                  <div style={{ height: '200px', overflow: 'hidden' }}>
+                    <img src={item.image_url} alt="News" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                )}
+                <div style={{ padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ color: 'var(--color-secondary)', marginBottom: '1rem', fontSize: '0.9rem', fontWeight: '500' }}>
+                    {new Date(item.published_date).toLocaleDateString(language === 'th' ? 'th-TH' : 'en-US', {
+                      year: 'numeric', month: 'long', day: 'numeric'
+                    })}
+                  </div>
+                  <h3 style={{ fontSize: '1.4rem', marginBottom: '1rem', color: 'var(--color-primary)', lineHeight: '1.4' }}>
+                    {language === 'en' ? (item.title_en || item.title_th || item.title) : (item.title_th || item.title)}
+                  </h3>
+                  <p style={{ color: 'var(--color-gray-800)', lineHeight: '1.6', flex: 1, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                    {language === 'en' ? (item.content_en || item.content_th || item.content) : (item.content_th || item.content)}
+                  </p>
+                  <div style={{ marginTop: '1.5rem', color: 'var(--color-primary)', fontWeight: 'bold' }}>
+                    {t('news.readmore')} &rarr;
+                  </div>
                 </div>
-              )}
-              <div style={{ padding: '2rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <div style={{ color: 'var(--color-secondary)', marginBottom: '1rem', fontSize: '0.9rem', fontWeight: '500' }}>
-                  {new Date(item.published_date).toLocaleDateString(language === 'th' ? 'th-TH' : 'en-US', {
-                    year: 'numeric', month: 'long', day: 'numeric'
-                  })}
-                </div>
-                <h3 style={{ fontSize: '1.4rem', marginBottom: '1rem', color: 'var(--color-primary)', lineHeight: '1.4' }}>
-                  {language === 'en' ? (item.title_en || item.title_th || item.title) : (item.title_th || item.title)}
-                </h3>
-                <p style={{ color: 'var(--color-gray-800)', lineHeight: '1.6', flex: 1 }}>
-                  {language === 'en' ? (item.content_en || item.content_th || item.content) : (item.content_th || item.content)}
-                </p>
               </div>
-            </div>
+            </Link>
           ))}
           {newsList.length === 0 && (
             <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '3rem', color: 'var(--color-secondary)' }}>
