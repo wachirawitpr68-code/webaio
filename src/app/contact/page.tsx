@@ -47,38 +47,17 @@ export default function Contact() {
           </div>
         </div>
 
-        {/* Contact Form */}
-        <div style={{ backgroundColor: 'var(--color-gray-50)', padding: '2.5rem', borderRadius: '12px', border: '1px solid var(--color-gray-200)' }}>
-          <form style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <div>
-              <input 
-                type="text" 
-                placeholder={t('contact.form.name')} 
-                style={{ width: '100%', padding: '1rem', border: '1px solid #ccc', borderRadius: '8px', fontSize: '1rem' }} 
-              />
-            </div>
-            <div>
-              <input 
-                type="email" 
-                placeholder={t('contact.form.email')} 
-                style={{ width: '100%', padding: '1rem', border: '1px solid #ccc', borderRadius: '8px', fontSize: '1rem' }} 
-              />
-            </div>
-            <div>
-              <textarea 
-                placeholder={t('contact.form.message')} 
-                rows={5} 
-                style={{ width: '100%', padding: '1rem', border: '1px solid #ccc', borderRadius: '8px', fontSize: '1rem', resize: 'vertical' }}
-              ></textarea>
-            </div>
-            <button 
-              type="button" 
-              className="btn btn-primary" 
-              style={{ width: '100%', padding: '1rem', fontSize: '1.1rem', backgroundColor: 'var(--color-primary)' }}
-            >
-              {t('contact.form.send')}
-            </button>
-          </form>
+        {/* Google Map Embed */}
+        <div style={{ backgroundColor: 'var(--color-gray-50)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--color-gray-200)' }}>
+          <iframe
+            src="https://maps.google.com/maps?q=คณะวิศวกรรมศาสตร์%20มหาวิทยาลัยอุบลราชธานี&t=&z=15&ie=UTF8&iwloc=&output=embed"
+            width="100%"
+            height="100%"
+            style={{ border: 0, borderRadius: '8px', minHeight: '350px' }}
+            allowFullScreen={true}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
         </div>
         
       </div>
