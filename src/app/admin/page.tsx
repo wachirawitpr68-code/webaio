@@ -211,11 +211,11 @@ export default function Admin() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder={t('admin.login.placeholder')} 
-              style={{ width: '100%', padding: '1.2rem', border: '1px solid #ccc', borderRadius: '8px', fontSize: '1.2rem' }} 
+              style={{ width: '100%', padding: '1.2rem', border: '1px solid rgba(0, 243, 255, 0.3)', borderRadius: '8px', fontSize: '1.2rem', background: 'rgba(10, 15, 30, 0.7)', color: 'white' }} 
             />
           </div>
           {error && <p style={{ color: 'red', fontSize: '1.1rem' }}>{error}</p>}
-          <button type="submit" style={{ marginTop: '1rem', width: '100%', padding: '1.2rem', fontSize: '1.3rem', backgroundColor: 'var(--color-primary)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', transition: 'background-color 0.2s' }}>
+          <button type="submit" style={{ marginTop: '1rem', width: '100%', padding: '1.2rem', fontSize: '1.3rem', backgroundColor: 'var(--color-primary)', color: '#000', boxShadow: '0 0 15px rgba(0, 243, 255, 0.4)', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', transition: 'background-color 0.2s' }}>
             {t('admin.login.button')}
           </button>
         </form>
@@ -238,11 +238,11 @@ export default function Admin() {
         onDragOver={handleDragOver}
         onDrop={handleDrop}
         style={{
-          border: '2px dashed var(--color-gray-200)',
+          border: '2px dashed rgba(0, 243, 255, 0.4)',
           borderRadius: '8px',
           padding: '2rem',
           textAlign: 'center',
-          backgroundColor: 'white',
+          background: 'rgba(10, 15, 30, 0.5)',
           cursor: 'pointer',
           position: 'relative',
           transition: 'border-color 0.3s ease'
@@ -310,7 +310,7 @@ export default function Admin() {
 
       <div className="responsive-grid-admin">
         {/* Form */}
-        <div style={{ background: 'var(--color-gray-50)', padding: '2rem', borderRadius: '12px', alignSelf: 'start', border: '1px solid var(--color-gray-200)' }}>
+        <div style={{ background: 'rgba(10, 15, 30, 0.8)', backdropFilter: 'blur(10px)', padding: '2rem', borderRadius: '12px', alignSelf: 'start', border: '1px solid var(--color-gray-200)' }}>
           <h2 style={{ marginBottom: '1.5rem', color: 'var(--color-primary)' }}>
             {activeTab === 'researchers' ? (editingResId ? "แก้ไขข้อมูลนักวิจัย" : "เพิ่มนักวิจัยใหม่") : (editingNewsId ? "แก้ไขข่าวสาร" : "เพิ่มข่าวสารใหม่")}
           </h2>
@@ -335,10 +335,10 @@ export default function Admin() {
               </div>
 
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                <button onClick={handleSaveRes} className="btn" style={{ flex: 1, backgroundColor: 'var(--color-primary)', color: 'white', padding: '1.2rem', fontSize: '1.2rem', fontWeight: 'bold' }} disabled={loading}>
+                <button onClick={handleSaveRes} className="btn" style={{ flex: 1, backgroundColor: 'var(--color-primary)', color: '#000', boxShadow: '0 0 15px rgba(0, 243, 255, 0.4)', padding: '1.2rem', fontSize: '1.2rem', fontWeight: 'bold' }} disabled={loading}>
                   {loading ? "กำลังบันทึก..." : "บันทึก"}
                 </button>
-                {editingResId && <button onClick={resetResForm} className="btn" style={{ background: '#ccc', padding: '1.2rem', fontSize: '1.2rem', fontWeight: 'bold' }} disabled={loading}>ยกเลิก</button>}
+                {editingResId && <button onClick={resetResForm} className="btn" style={{ background: 'rgba(255, 255, 255, 0.1)', color: 'white', border: '1px solid rgba(255, 255, 255, 0.3)', padding: '1.2rem', fontSize: '1.2rem', fontWeight: 'bold' }} disabled={loading}>ยกเลิก</button>}
               </div>
             </div>
           ) : (
@@ -354,10 +354,10 @@ export default function Admin() {
               </div>
               
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                <button onClick={handleSaveNews} className="btn" style={{ flex: 1, backgroundColor: 'var(--color-primary)', color: 'white', padding: '1.2rem', fontSize: '1.2rem', fontWeight: 'bold' }} disabled={loading}>
+                <button onClick={handleSaveNews} className="btn" style={{ flex: 1, backgroundColor: 'var(--color-primary)', color: '#000', boxShadow: '0 0 15px rgba(0, 243, 255, 0.4)', padding: '1.2rem', fontSize: '1.2rem', fontWeight: 'bold' }} disabled={loading}>
                   {loading ? "กำลังบันทึก..." : "บันทึก"}
                 </button>
-                {editingNewsId && <button onClick={resetNewsForm} className="btn" style={{ background: '#ccc', padding: '1.2rem', fontSize: '1.2rem', fontWeight: 'bold' }} disabled={loading}>ยกเลิก</button>}
+                {editingNewsId && <button onClick={resetNewsForm} className="btn" style={{ background: 'rgba(255, 255, 255, 0.1)', color: 'white', border: '1px solid rgba(255, 255, 255, 0.3)', padding: '1.2rem', fontSize: '1.2rem', fontWeight: 'bold' }} disabled={loading}>ยกเลิก</button>}
               </div>
             </div>
           )}
@@ -373,7 +373,7 @@ export default function Admin() {
             loading && researchers.length === 0 ? <p>กำลังโหลดข้อมูล...</p> : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {researchers.map(r => (
-                  <div key={r.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem', border: '1px solid var(--color-gray-200)', borderRadius: '8px', backgroundColor: 'white' }}>
+                  <div key={r.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem', border: '1px solid var(--color-gray-200)', borderRadius: '8px', background: 'rgba(10, 15, 30, 0.5)' }}>
                     <div>
                       <h3 style={{ fontSize: '1.1rem', color: 'var(--color-primary)' }}>{r.name_th || r.name} <span style={{fontSize:'0.9rem', color:'#888'}}>({r.name_en})</span></h3>
                       <p style={{ color: 'var(--color-secondary)', fontSize: '0.9rem' }}>{r.position_th || r.position}</p>
@@ -391,7 +391,7 @@ export default function Admin() {
             loading && news.length === 0 ? <p>กำลังโหลดข้อมูล...</p> : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {news.map(n => (
-                  <div key={n.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem', border: '1px solid var(--color-gray-200)', borderRadius: '8px', backgroundColor: 'white' }}>
+                  <div key={n.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem', border: '1px solid var(--color-gray-200)', borderRadius: '8px', background: 'rgba(10, 15, 30, 0.5)' }}>
                     <div>
                       <h3 style={{ fontSize: '1.1rem', color: 'var(--color-primary)' }}>{n.title_th || n.title}</h3>
                       <p style={{ color: '#888', fontSize: '0.8rem' }}>{new Date(n.published_date).toLocaleDateString('th-TH')}</p>
@@ -415,7 +415,9 @@ export default function Admin() {
 const inputStyle = {
   width: '100%',
   padding: '1rem',
-  border: '1px solid #ccc',
+  border: '1px solid rgba(0, 243, 255, 0.3)',
   borderRadius: '8px',
-  fontSize: '1.1rem'
+  fontSize: '1.1rem',
+  background: 'rgba(10, 15, 30, 0.7)',
+  color: '#ffffff'
 };
