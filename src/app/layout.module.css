@@ -54,18 +54,21 @@
 }
 
 .logoCircle {
-  color: var(--color-primary-blue);
+  color: var(--color-primary);
   font-size: 2rem;
   margin-right: 8px;
   line-height: 0.8;
+  text-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
 }
 
 .logoText {
-  color: var(--color-white);
-  background: rgba(5, 5, 16, 0.8);
-  backdrop-filter: blur(10px);
+  color: #000;
+  background: var(--color-primary);
+  font-weight: 800;
   padding: 2px 6px;
   margin-top: 2px;
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
 }
 
 .navLinks {
