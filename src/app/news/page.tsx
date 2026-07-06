@@ -82,7 +82,7 @@ export default function News() {
                   <h3 style={{ fontSize: '1.4rem', marginBottom: '1rem', color: 'var(--color-primary)', lineHeight: '1.4' }}>
                     {language === 'en' ? (item.title_en || item.title_th || item.title) : (item.title_th || item.title)}
                   </h3>
-                  <p style={{ color: 'var(--color-gray-800)', lineHeight: '1.6', flex: 1, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                  <p style={{ color: '#cbd5e1', lineHeight: '1.6', flex: 1, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                     {language === 'en' ? (item.content_en || item.content_th || item.content) : (item.content_th || item.content)}
                   </p>
                   <div style={{ marginTop: '1.5rem', color: 'var(--color-primary)', fontWeight: 'bold' }}>

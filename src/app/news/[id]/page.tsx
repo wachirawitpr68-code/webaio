@@ -58,7 +58,7 @@ export default function NewsDetail() {
         {t('news.back')}
       </Link>
 
-      <article style={{ backgroundColor: 'white', borderRadius: '16px', padding: '3rem', boxShadow: '0 4px 20px rgba(0,0,0,0.05)', border: '1px solid var(--color-gray-200)' }}>
+      <article style={{ background: 'rgba(10, 15, 30, 0.7)', backdropFilter: 'blur(10px)', borderRadius: '16px', padding: '3rem', boxShadow: '0 4px 20px rgba(0, 243, 255, 0.1)', border: '1px solid rgba(0, 243, 255, 0.3)' }}>
         <h1 style={{ fontSize: '2.5rem', color: 'var(--color-primary)', marginBottom: '1rem', lineHeight: '1.3' }}>
           {title}
         </h1>
@@ -84,7 +84,7 @@ export default function NewsDetail() {
         <div style={{ 
           fontSize: '1.2rem', 
           lineHeight: '1.8', 
-          color: 'var(--color-secondary)',
+          color: '#e2e8f0',
           whiteSpace: 'pre-wrap'
         }}>
           {content}
