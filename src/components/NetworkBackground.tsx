@@ -125,9 +125,10 @@ export default function NetworkBackground() {
       relativeX: number;
       relativeY: number;
       locIndex: number;
+      index: number;
       color: string;
 
-      constructor() {
+      constructor(index: number) {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
         this.vx = (Math.random() - 0.5) * 1.5;
@@ -136,6 +137,9 @@ export default function NetworkBackground() {
         this.relativeX = 0;
         this.relativeY = 0;
         this.locIndex = 0;
+        this.index = index;
+        
+        // Dimmer colors for non-home pages handled in draw()
         this.color = Math.random() > 0.5 ? 'rgba(0, 243, 255, 0.9)' : 'rgba(255, 0, 255, 0.9)';
       }
 
@@ -167,9 +171,18 @@ export default function NetworkBackground() {
 
       draw() {
         if (!ctx) return;
+        // Skip drawing excess particles on non-home pages to reduce clutter
+        if (pathname !== '/' && this.index > 80) return;
+
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
+        
+        // Make them dimmer on other pages so they don't distract from content
+        if (pathname !== '/') {
+            ctx.fillStyle = this.color.replace('0.9', '0.3');
+        } else {
+            ctx.fillStyle = this.color;
+        }
         ctx.fill();
       }
     }
@@ -178,7 +191,7 @@ export default function NetworkBackground() {
       getRelativeTargets();
       particles = [];
       for (let i = 0; i < maxParticles; i++) {
-        particles.push(new Particle());
+        particles.push(new Particle(i));
       }
     };
 
@@ -251,10 +264,15 @@ export default function NetworkBackground() {
       }
 
       for (let i = 0; i < particles.length; i++) {
+        // Skip update/draw for excess particles on non-home pages
+        if (pathname !== '/' && particles[i].index > 80) continue;
+
         particles[i].update(currentState);
         particles[i].draw();
 
         for (let j = i + 1; j < particles.length; j++) {
+          if (pathname !== '/' && particles[j].index > 80) continue;
+
           if ((currentState === 1 || currentState === 2) && particles[i].locIndex !== particles[j].locIndex) {
               continue;
           }
@@ -271,7 +289,9 @@ export default function NetworkBackground() {
             ctx.lineTo(particles[j].x, particles[j].y);
             
             let alpha = 0;
-            if (currentState === 1 || currentState === 2) {
+            if (pathname !== '/') {
+                alpha = 0.15 - distance / connectDist * 0.15; // Very faint lines on other pages
+            } else if (currentState === 1 || currentState === 2) {
                 alpha = 0.6 - distance / connectDist;
             } else {
                 alpha = 0.4 - distance / connectDist;
