@@ -339,12 +339,21 @@ export default function Admin() {
               <textarea placeholder="ประวัติย่อ (TH)" rows={3} value={resFormData.bio_th} onChange={e => setResFormData({...resFormData, bio_th: e.target.value})} style={inputStyle} disabled={loading} />
               <textarea placeholder="Bio (EN)" rows={3} value={resFormData.bio_en} onChange={e => setResFormData({...resFormData, bio_en: e.target.value})} style={inputStyle} disabled={loading} />
               <input type="text" placeholder="มหาวิทยาลัย (University)" value={resFormData.university} onChange={e => setResFormData({...resFormData, university: e.target.value})} style={inputStyle} disabled={loading} />
-              <select value={resFormData.province} onChange={e => setResFormData({...resFormData, province: e.target.value})} style={{...inputStyle, WebkitAppearance: 'none'}} disabled={loading}>
-                <option value="">เลือกจังหวัด (Province)</option>
-                {PROVINCES.map(p => (
-                  <option key={p.name} value={p.name}>{p.name}</option>
-                ))}
-              </select>
+              <div style={{ position: 'relative' }}>
+                <input 
+                  list="provinces-list" 
+                  value={resFormData.province} 
+                  onChange={e => setResFormData({...resFormData, province: e.target.value})} 
+                  placeholder="พิมพ์ค้นหา หรือเลือกจังหวัด (Province)" 
+                  style={inputStyle} 
+                  disabled={loading} 
+                />
+                <datalist id="provinces-list">
+                  {PROVINCES.map(p => (
+                    <option key={p.name} value={p.name}>{p.name}</option>
+                  ))}
+                </datalist>
+              </div>
               <input type="text" placeholder="ลิงก์ Google Scholar" value={resFormData.scholar_link} onChange={e => setResFormData({...resFormData, scholar_link: e.target.value})} style={inputStyle} disabled={loading} />
               
               <div style={{ marginTop: '0.5rem' }}>
