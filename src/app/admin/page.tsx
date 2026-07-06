@@ -10,6 +10,7 @@ type Tab = 'researchers' | 'news';
 export default function Admin() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   
   const [activeTab, setActiveTab] = useState<Tab>('researchers');
@@ -207,13 +208,22 @@ export default function Admin() {
         <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '2rem', background: 'var(--color-gray-50)', padding: '3.5rem', borderRadius: '16px', border: '1px solid var(--color-gray-200)', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
           <div>
             <label style={{ display: 'block', marginBottom: '1rem', fontWeight: 'bold', fontSize: '1.2rem' }}>{t('admin.login.password')}</label>
-            <input 
-              type="password" 
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder={t('admin.login.placeholder')} 
-              style={{ width: '100%', padding: '1.2rem', border: '1px solid rgba(0, 243, 255, 0.3)', borderRadius: '8px', fontSize: '1.2rem', background: 'rgba(10, 15, 30, 0.7)', color: 'white' }} 
-            />
+            <div style={{ position: 'relative' }}>
+              <input 
+                type={showPassword ? "text" : "password"} 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder={t('admin.login.placeholder')} 
+                style={{ width: '100%', padding: '1.2rem', paddingRight: '3rem', border: '1px solid rgba(0, 243, 255, 0.3)', borderRadius: '8px', fontSize: '1.2rem', background: 'rgba(10, 15, 30, 0.7)', color: 'white' }} 
+              />
+              <button 
+                type="button" 
+                onClick={() => setShowPassword(!showPassword)}
+                style={{ position: 'absolute', right: '15px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--color-primary)', cursor: 'pointer', fontSize: '1.2rem' }}
+              >
+                {showPassword ? "👁️‍🗨️" : "👁️"}
+              </button>
+            </div>
           </div>
           {error && <p style={{ color: 'red', fontSize: '1.1rem' }}>{error}</p>}
           <button type="submit" style={{ marginTop: '1rem', width: '100%', padding: '1.2rem', fontSize: '1.3rem', backgroundColor: 'var(--color-primary)', color: '#000', boxShadow: '0 0 15px rgba(0, 243, 255, 0.4)', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold', transition: 'background-color 0.2s' }}>
