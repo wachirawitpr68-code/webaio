@@ -17,8 +17,42 @@ export default function NetworkBackground() {
     canvas.width = width;
     canvas.height = height;
 
-    const particles: Particle[] = [];
-    const particleCount = Math.floor((width * height) / 15000); // Responsive amount of particles
+    let particles: Particle[] = [];
+    let targets: {x: number, y: number}[] = [];
+    
+    // Animation States: 0 = Wandering, 1 = Forming, 2 = Holding, 3 = Breaking
+    let currentState = 0;
+    let stateTimer = 0;
+
+    const getTextTargets = () => {
+      targets = [];
+      const offscreen = document.createElement('canvas');
+      offscreen.width = width;
+      offscreen.height = height;
+      const offCtx = offscreen.getContext('2d');
+      if (!offCtx) return;
+
+      const fontSize = Math.min(width * 0.25, 300); // Responsive font size
+      offCtx.fillStyle = 'white';
+      offCtx.font = `900 ${fontSize}px "Arial", sans-serif`;
+      offCtx.textAlign = 'center';
+      offCtx.textBaseline = 'middle';
+      offCtx.fillText('AIO', width / 2, height / 2);
+
+      const imageData = offCtx.getImageData(0, 0, width, height).data;
+      
+      // Sample pixels to create targets
+      const step = Math.floor(width / 150); // Adjust step based on screen width
+      for (let y = 0; y < height; y += step) {
+        for (let x = 0; x < width; x += step) {
+          const index = (y * width + x) * 4;
+          const alpha = imageData[index + 3];
+          if (alpha > 128) {
+            targets.push({ x, y });
+          }
+        }
+      }
+    };
 
     class Particle {
       x: number;
@@ -26,6 +60,9 @@ export default function NetworkBackground() {
       vx: number;
       vy: number;
       radius: number;
+      targetX: number;
+      targetY: number;
+      color: string;
 
       constructor() {
         this.x = Math.random() * width;
@@ -33,53 +70,130 @@ export default function NetworkBackground() {
         this.vx = (Math.random() - 0.5) * 1.5;
         this.vy = (Math.random() - 0.5) * 1.5;
         this.radius = Math.random() * 2 + 1;
+        this.targetX = this.x;
+        this.targetY = this.y;
+        this.color = Math.random() > 0.5 ? 'rgba(0, 243, 255, 0.8)' : 'rgba(255, 0, 255, 0.8)';
       }
 
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
+      assignTarget(target: {x: number, y: number}) {
+        this.targetX = target.x;
+        this.targetY = target.y;
+      }
 
-        if (this.x < 0 || this.x > width) this.vx = -this.vx;
-        if (this.y < 0 || this.y > height) this.vy = -this.vy;
+      update(state: number) {
+        if (state === 0 || state === 3) {
+          // Wandering or Breaking
+          this.x += this.vx;
+          this.y += this.vy;
+
+          if (this.x < 0 || this.x > width) this.vx = -this.vx;
+          if (this.y < 0 || this.y > height) this.vy = -this.vy;
+          
+          if (state === 3) {
+             // add a bit of burst speed initially
+             this.x += this.vx * 3;
+             this.y += this.vy * 3;
+          }
+        } else if (state === 1) {
+          // Forming AIO
+          const dx = this.targetX - this.x;
+          const dy = this.targetY - this.y;
+          this.x += dx * 0.05; // Ease in
+          this.y += dy * 0.05;
+        } else if (state === 2) {
+          // Holding form with slight jitter
+          this.x = this.targetX + (Math.random() - 0.5) * 2;
+          this.y = this.targetY + (Math.random() - 0.5) * 2;
+        }
       }
 
       draw() {
         if (!ctx) return;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(0, 243, 255, 0.7)';
+        ctx.fillStyle = this.color;
         ctx.fill();
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = this.color;
       }
     }
 
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
-    }
+    const initParticles = () => {
+      getTextTargets();
+      particles = [];
+      // Need at least as many particles as targets to form the text properly
+      const count = Math.max(Math.floor((width * height) / 9000), targets.length); 
+      
+      for (let i = 0; i < count; i++) {
+        const p = new Particle();
+        if (targets.length > 0) {
+          p.assignTarget(targets[i % targets.length]);
+        }
+        particles.push(p);
+      }
+    };
 
+    initParticles();
+
+    let animationId: number;
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
 
+      // State Machine Logic
+      stateTimer++;
+      if (currentState === 0 && stateTimer > 300) { // Wander for ~5s (60fps * 5)
+        currentState = 1;
+        stateTimer = 0;
+      } else if (currentState === 1 && stateTimer > 120) { // Form for ~2s
+        currentState = 2;
+        stateTimer = 0;
+      } else if (currentState === 2 && stateTimer > 180) { // Hold for ~3s
+        currentState = 3;
+        stateTimer = 0;
+        // Give particles a random burst when breaking
+        particles.forEach(p => {
+          p.vx = (Math.random() - 0.5) * 6;
+          p.vy = (Math.random() - 0.5) * 6;
+        });
+      } else if (currentState === 3 && stateTimer > 60) { // Break for ~1s
+        currentState = 0;
+        stateTimer = 0;
+        // Normalize speed
+        particles.forEach(p => {
+           p.vx = (Math.random() - 0.5) * 1.5;
+           p.vy = (Math.random() - 0.5) * 1.5;
+        });
+      }
+
       for (let i = 0; i < particles.length; i++) {
-        particles[i].update();
+        particles[i].update(currentState);
         particles[i].draw();
 
+        // Draw connections only if close
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 120) {
+          let connectDist = currentState === 1 || currentState === 2 ? 40 : 120;
+
+          if (distance < connectDist) {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(255, 0, 255, ${1 - distance / 120})`;
+            
+            const alpha = currentState === 1 || currentState === 2 
+                ? 0.5 - distance / connectDist
+                : 1 - distance / connectDist;
+                
+            ctx.strokeStyle = `rgba(0, 243, 255, ${alpha})`;
             ctx.lineWidth = 1;
             ctx.stroke();
           }
         }
       }
 
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
     };
 
     animate();
@@ -89,12 +203,14 @@ export default function NetworkBackground() {
       height = window.innerHeight;
       canvas.width = width;
       canvas.height = height;
+      initParticles();
     };
 
     window.addEventListener('resize', handleResize);
 
     return () => {
       window.removeEventListener('resize', handleResize);
+      cancelAnimationFrame(animationId);
     };
   }, []);
 
