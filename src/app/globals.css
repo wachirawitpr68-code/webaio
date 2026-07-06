@@ -1,20 +1,22 @@
 :root {
-  /* Primary Professional Colors */
-  --color-primary: #0F172A; /* Navy Blue */
-  --color-secondary: #334155; /* Slate */
-  --color-accent: #2563EB; /* Bright Blue for active/hover */
+  /* Cyberpunk / High-Tech AI Colors */
+  --color-primary: #00f3ff; /* Neon Cyber Blue */
+  --color-secondary: #a0aec0; /* Slate Gray for secondary text */
+  --color-accent: #ff00ff; /* Neon Pink/Purple */
   
-  /* Original Accent Colors (used sparingly) */
-  --color-primary-red: #d32f2f;
+  /* Original Accent Colors (adjusted for dark mode) */
+  --color-primary-red: #ff2a2a;
   --color-primary-yellow: #fbc02d;
   
-  /* Neutrals */
-  --color-black: #0f172a; /* Slate 900 */
-  --color-white: #ffffff;
-  --color-gray-50: #f8fafc;
-  --color-gray-100: #f1f5f9;
-  --color-gray-200: #e2e8f0;
-  --color-gray-800: #1e293b;
+  /* Neutrals for Dark Mode */
+  --color-black: #ffffff; /* Text is now white */
+  --color-white: #050510; /* Background is now dark */
+  
+  /* Glassmorphism / Translucent layers */
+  --color-gray-50: rgba(10, 10, 25, 0.6); /* Translucent dark for cards */
+  --color-gray-100: rgba(255, 255, 255, 0.05);
+  --color-gray-200: rgba(0, 243, 255, 0.2); /* Neon border subtle */
+  --color-gray-800: #e2e8f0;
   
   --font-family-sans: var(--font-prompt), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
@@ -27,7 +29,9 @@
 
 body {
   font-family: var(--font-family-sans);
-  background-color: var(--color-white);
+  background-color: var(--color-white); /* #050510 */
+  background-image: linear-gradient(180deg, #050510 0%, #0a0a2a 50%, #050510 100%);
+  background-attachment: fixed;
   color: var(--color-black);
   line-height: 1.6;
 }
@@ -54,35 +58,45 @@ a {
   border-radius: 4px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
 }
 
 .btn-primary {
-  background-color: var(--color-primary-blue);
-  color: var(--color-white);
+  background-color: rgba(0, 243, 255, 0.1);
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
 }
 
 .btn-primary:hover {
-  background-color: #1565c0;
+  background-color: var(--color-primary);
+  color: #000;
+  box-shadow: 0 0 20px rgba(0, 243, 255, 0.6);
 }
 
 .btn-danger {
-  background-color: var(--color-primary-red);
-  color: var(--color-white);
+  background-color: rgba(255, 42, 42, 0.1);
+  color: var(--color-primary-red);
+  border: 1px solid var(--color-primary-red);
 }
 
 .btn-danger:hover {
-  background-color: #c62828;
+  background-color: var(--color-primary-red);
+  color: #000;
+  box-shadow: 0 0 20px rgba(255, 42, 42, 0.6);
 }
 
 .btn-warning {
-  background-color: var(--color-primary-yellow);
-  color: var(--color-black);
+  background-color: rgba(251, 192, 45, 0.1);
+  color: var(--color-primary-yellow);
+  border: 1px solid var(--color-primary-yellow);
 }
 
 .btn-warning:hover {
-  background-color: #f9a825;
+  background-color: var(--color-primary-yellow);
+  color: #000;
+  box-shadow: 0 0 20px rgba(251, 192, 45, 0.6);
 }
 
 /* Animations */

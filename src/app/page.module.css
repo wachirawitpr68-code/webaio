@@ -9,7 +9,7 @@
   justify-content: center;
   min-height: 85vh;
   padding: 0 5%;
-  background-color: var(--color-gray-50);
+  background-color: transparent;
   position: relative;
   overflow: hidden;
 }
@@ -91,7 +91,7 @@
 
 .responsibleCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0, 243, 255, 0.3);
 }
 
 .btnPrimary:hover {
@@ -109,7 +109,7 @@
 
 .responsibleCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0, 243, 255, 0.3);
 }
 
 .btnOutline:hover {
@@ -121,12 +121,12 @@
 
 .section {
   padding: 6rem 5%;
-  background-color: var(--color-white);
+  background-color: transparent;
 }
 
 .sectionLight {
   padding: 6rem 5%;
-  background-color: var(--color-gray-50);
+  background-color: transparent;
 }
 
 .sectionTitle {
@@ -167,17 +167,18 @@
 }
 
 .cardBase {
-  background: white;
+  background: rgba(10, 15, 30, 0.7);
+  backdrop-filter: blur(10px);
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid rgba(0, 243, 255, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .cardBase:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0, 243, 255, 0.3);
 }
 
 .cardDirector {
@@ -231,7 +232,7 @@
 
 .innoCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0, 243, 255, 0.3);
 }
 
 .cardMission {
@@ -248,7 +249,7 @@
 
 .innoCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0, 243, 255, 0.3);
 }
 
 .missionList {
@@ -266,11 +267,12 @@
 }
 
 .domainCard {
-  background: white;
+  background: rgba(10, 15, 30, 0.7);
+  backdrop-filter: blur(10px);
   border-radius: 12px;
   padding: 2rem;
   box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid rgba(0, 243, 255, 0.2);
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -278,7 +280,7 @@
 
 .domainCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0, 243, 255, 0.3);
 }
 
 .domainCardRed { border-top: 4px solid #ef4444; }
@@ -316,7 +318,7 @@
 
 .innoCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0, 243, 255, 0.3);
 }
 
 .domainList {
@@ -336,8 +338,9 @@
 
 .chip {
   padding: 0.5rem 1.25rem;
-  background-color: white;
-  border: 1px solid var(--color-gray-200);
+  background: rgba(10, 15, 30, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 243, 255, 0.2);
   border-radius: 50px;
   font-size: 0.9rem;
   color: var(--color-secondary);
@@ -352,18 +355,19 @@
 }
 
 .innoCard {
-  background: white;
+  background: rgba(10, 15, 30, 0.7);
+  backdrop-filter: blur(10px);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid rgba(0, 243, 255, 0.2);
   margin-bottom: 1rem;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .innoCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0, 243, 255, 0.3);
 }
 
 .innoTitle {
@@ -380,7 +384,9 @@
 
 /* Stats Banner */
 .statsBanner {
-  background-color: var(--color-primary); /* Deep blue */
+  background: linear-gradient(90deg, rgba(255,0,255,0.2) 0%, rgba(0,243,255,0.2) 100%);
+  border-top: 1px solid var(--color-primary);
+  border-bottom: 1px solid var(--color-primary);
   color: white;
   padding: 4rem 5%;
 }
@@ -400,7 +406,7 @@
 
 .domainCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0, 243, 255, 0.3);
 }
 
 .statValue {
@@ -426,7 +432,8 @@
 .responsibleCard {
   max-width: 800px;
   margin: 0 auto;
-  background: white;
+  background: rgba(10, 15, 30, 0.7);
+  backdrop-filter: blur(10px);
   border-radius: 12px;
   padding: 3rem;
   box-shadow: 0 4px 15px rgba(0,0,0,0.05);
@@ -437,7 +444,7 @@
 
 .responsibleCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0, 243, 255, 0.3);
 }
 
 .responsibleCard h2 {
@@ -450,7 +457,7 @@
 
 .innoCard:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0, 243, 255, 0.3);
 }
 
 .responsibleCard p {
@@ -465,18 +472,18 @@
 }
 
 .respItem {
-  background-color: var(--color-gray-50);
+  background-color: transparent;
   padding: 1rem;
   border-radius: 8px;
   font-weight: 700;
   color: var(--color-primary);
-  border: 1px solid var(--color-gray-200);
+  border: 1px solid rgba(0, 243, 255, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .cardBase:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0, 243, 255, 0.3);
 }
 
 
