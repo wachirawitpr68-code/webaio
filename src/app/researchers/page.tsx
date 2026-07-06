@@ -4,11 +4,13 @@ import { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import { supabase } from "../../lib/supabaseClient";
 import { useLanguage } from "../../context/LanguageContext";
+import MapModal from "../../components/MapModal";
 
 export default function Researchers() {
   const { t, language } = useLanguage();
   const [researchers, setResearchers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isMapOpen, setIsMapOpen] = useState(false);
 
   useEffect(() => {
     fetchResearchers();
@@ -35,6 +37,35 @@ export default function Researchers() {
       <section className={styles.header}>
         <h1 className={styles.title}>{t('researchers.title')}</h1>
         <p className={styles.subtitle}>{t('researchers.subtitle')}</p>
+        <button 
+          onClick={() => setIsMapOpen(true)}
+          style={{
+            marginTop: '2rem',
+            padding: '1rem 2rem',
+            fontSize: '1.2rem',
+            fontWeight: 'bold',
+            background: 'transparent',
+            color: 'var(--color-primary)',
+            border: '2px solid var(--color-primary)',
+            borderRadius: '30px',
+            cursor: 'pointer',
+            boxShadow: '0 0 15px rgba(0, 243, 255, 0.3)',
+            transition: 'all 0.3s ease'
+          }}
+          onMouseEnter={e => {
+            e.currentTarget.style.background = 'var(--color-primary)';
+            e.currentTarget.style.color = '#000';
+            e.currentTarget.style.boxShadow = '0 0 25px rgba(0, 243, 255, 0.6)';
+          }}
+          onMouseLeave={e => {
+            e.currentTarget.style.background = 'transparent';
+            e.currentTarget.style.color = 'var(--color-primary)';
+            e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 243, 255, 0.3)';
+          }}
+        >
+          📍 แล้วนักวิจัยของเราอยู่ไหนบ้าง?
+        </button>
+      
       </section>
 
       <section className={styles.researchersList}>
@@ -77,6 +108,7 @@ export default function Researchers() {
           )}
         </div>
       </section>
+      <MapModal isOpen={isMapOpen} onClose={() => setIsMapOpen(false)} researchers={researchers} />
     </div>
   );
 }

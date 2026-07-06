@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useLanguage } from "../../context/LanguageContext";
+import { PROVINCES } from "../../data/provinces";
 
 type Tab = 'researchers' | 'news';
 
@@ -21,7 +22,7 @@ export default function Admin() {
     name_th: "", name_en: "", 
     position_th: "", position_en: "", 
     bio_th: "", bio_en: "", 
-    scholar_link: "", image_url: ""
+    scholar_link: "", image_url: "", university: "", province: ""
   });
   const [resFile, setResFile] = useState<File | null>(null);
   const resFileInputRef = useRef<HTMLInputElement>(null);
@@ -129,14 +130,14 @@ export default function Admin() {
       name_th: r.name_th || r.name || "", name_en: r.name_en || "",
       position_th: r.position_th || r.position || "", position_en: r.position_en || "",
       bio_th: r.bio_th || r.bio || "", bio_en: r.bio_en || "",
-      scholar_link: r.scholar_link || "", image_url: r.image_url || ""
+      scholar_link: r.scholar_link || "", image_url: r.image_url || "", university: r.university || "", province: r.province || ""
     });
     setResFile(null);
   };
 
   const resetResForm = () => {
     setEditingResId(null);
-    setResFormData({ name_th: "", name_en: "", position_th: "", position_en: "", bio_th: "", bio_en: "", scholar_link: "", image_url: "" });
+    setResFormData({ name_th: "", name_en: "", position_th: "", position_en: "", bio_th: "", bio_en: "", scholar_link: "", image_url: "", university: "", province: "" });
     setResFile(null);
   };
 
@@ -327,6 +328,13 @@ export default function Admin() {
               </div>
               <textarea placeholder="ประวัติย่อ (TH)" rows={3} value={resFormData.bio_th} onChange={e => setResFormData({...resFormData, bio_th: e.target.value})} style={inputStyle} disabled={loading} />
               <textarea placeholder="Bio (EN)" rows={3} value={resFormData.bio_en} onChange={e => setResFormData({...resFormData, bio_en: e.target.value})} style={inputStyle} disabled={loading} />
+              <input type="text" placeholder="มหาวิทยาลัย (University)" value={resFormData.university} onChange={e => setResFormData({...resFormData, university: e.target.value})} style={inputStyle} disabled={loading} />
+              <select value={resFormData.province} onChange={e => setResFormData({...resFormData, province: e.target.value})} style={{...inputStyle, WebkitAppearance: 'none'}} disabled={loading}>
+                <option value="">เลือกจังหวัด (Province)</option>
+                {PROVINCES.map(p => (
+                  <option key={p.name} value={p.name}>{p.name}</option>
+                ))}
+              </select>
               <input type="text" placeholder="ลิงก์ Google Scholar" value={resFormData.scholar_link} onChange={e => setResFormData({...resFormData, scholar_link: e.target.value})} style={inputStyle} disabled={loading} />
               
               <div style={{ marginTop: '0.5rem' }}>
