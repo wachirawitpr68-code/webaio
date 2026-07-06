@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useEffect, useRef } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function NetworkBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const pathname = usePathname();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -186,28 +188,34 @@ export default function NetworkBackground() {
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
 
-      stateTimer++;
-      if (currentState === 0 && stateTimer > 300) { 
-        currentState = 1;
-        stateTimer = 0;
-        randomizeLocations();
-      } else if (currentState === 1 && stateTimer > 120) { 
-        currentState = 2;
-        stateTimer = 0;
-      } else if (currentState === 2 && stateTimer > 240) { 
-        currentState = 3;
-        stateTimer = 0;
-        particles.forEach(p => {
-          p.vx = (Math.random() - 0.5) * 15; 
-          p.vy = (Math.random() - 0.5) * 15;
-        });
-      } else if (currentState === 3 && stateTimer > 40) { 
+      if (pathname === '/') {
+        stateTimer++;
+        if (currentState === 0 && stateTimer > 300) { 
+          currentState = 1;
+          stateTimer = 0;
+          randomizeLocations();
+        } else if (currentState === 1 && stateTimer > 120) { 
+          currentState = 2;
+          stateTimer = 0;
+        } else if (currentState === 2 && stateTimer > 240) { 
+          currentState = 3;
+          stateTimer = 0;
+          particles.forEach(p => {
+            p.vx = (Math.random() - 0.5) * 15; 
+            p.vy = (Math.random() - 0.5) * 15;
+          });
+        } else if (currentState === 3 && stateTimer > 40) { 
+          currentState = 0;
+          stateTimer = 0;
+          particles.forEach(p => {
+             p.vx = (Math.random() - 0.5) * 1.5;
+             p.vy = (Math.random() - 0.5) * 1.5;
+          });
+        }
+      } else {
+        // If not on home page, stay in wandering mode forever
         currentState = 0;
         stateTimer = 0;
-        particles.forEach(p => {
-           p.vx = (Math.random() - 0.5) * 1.5;
-           p.vy = (Math.random() - 0.5) * 1.5;
-        });
       }
 
       if (currentState === 1 || currentState === 2) {
@@ -295,7 +303,7 @@ export default function NetworkBackground() {
       window.removeEventListener('resize', handleResize);
       cancelAnimationFrame(animationId);
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <canvas
