@@ -27,7 +27,7 @@ export default function NetworkBackground() {
     let stateTimer = 0;
     let maxParticles = 400; 
     let textOpacity = 0;
-    const numWords = 5;
+    const numWords = 7;
 
     const getRelativeTargets = () => {
       relativeTargets = [];
