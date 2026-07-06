@@ -3,8 +3,8 @@
 }
 
 .header {
-  background-color: var(--color-black);
-  color: var(--color-white);
+  background: transparent;
+  color: #ffffff;
   padding: 4rem 1rem;
   text-align: center;
 }
@@ -19,18 +19,19 @@
   display: block;
   width: 60px;
   height: 4px;
-  background-color: var(--color-primary-yellow);
+  background-color: var(--color-primary);
+  box-shadow: 0 0 10px var(--color-primary);
   margin: 1rem auto 0;
 }
 
 .subtitle {
-  color: #aaa;
+  color: var(--color-secondary);
   font-size: 1.2rem;
 }
 
 .researchersList {
   padding: 5rem 0;
-  background-color: var(--color-gray-100);
+  background: transparent;
 }
 
 .grid {
@@ -40,17 +41,19 @@
 }
 
 .card {
-  background-color: var(--color-white);
+  background: rgba(10, 15, 30, 0.7);
+  backdrop-filter: blur(10px);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border-top: 4px solid var(--color-gray-200);
+  border: 1px solid rgba(0, 243, 255, 0.2);
+  border-top: 4px solid var(--color-primary);
 }
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 25px rgba(0, 243, 255, 0.4);
   border-top-color: var(--color-accent);
 }
 
@@ -74,16 +77,17 @@
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
+  color: #ffffff;
 }
 
 .position {
-  color: var(--color-primary-blue);
+  color: var(--color-primary);
   font-weight: 600;
   margin-bottom: 1rem;
 }
 
 .bio {
-  color: var(--color-gray-800);
+  color: var(--color-secondary);
   margin-bottom: 1.5rem;
   line-height: 1.5;
 }
@@ -102,7 +106,8 @@
 }
 
 .scholarLink:hover {
-  color: #1a0dab;
+  color: #ffffff;
+  text-shadow: 0 0 5px #4285F4;
   text-decoration: underline;
 }
 
