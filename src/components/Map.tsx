@@ -55,21 +55,21 @@ export default function Map({ researchers }: MapProps) {
             className: 'custom-leaflet-marker',
             html: `
               <div style="
-                width: 40px; 
-                height: 40px; 
+                width: 70px; 
+                height: 70px; 
                 border-radius: 50%; 
-                border: 2px solid #00f3ff; 
-                box-shadow: 0 0 10px #00f3ff; 
+                border: 3px solid #00f3ff; 
+                box-shadow: 0 0 15px #00f3ff; 
                 overflow: hidden;
                 background: #000;
               ">
                 <img src="${avatarUrl}" style="width: 100%; height: 100%; object-fit: cover;" />
               </div>
-              ${resList.length > 1 ? `<div style="position: absolute; top: -5px; right: -5px; background: #ff00ff; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;">${resList.length}</div>` : ''}
+              ${resList.length > 1 ? `<div style="position: absolute; top: -2px; right: -2px; background: #ff00ff; color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; border: 2px solid white;">${resList.length}</div>` : ''}
             `,
-            iconSize: [40, 40],
-            iconAnchor: [20, 20],
-            popupAnchor: [0, -20]
+            iconSize: [70, 70],
+            iconAnchor: [35, 35],
+            popupAnchor: [0, -35]
           });
 
           return (
