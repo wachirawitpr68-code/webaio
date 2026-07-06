@@ -25,7 +25,7 @@ export default function NetworkBackground() {
     // Animation States: 0 = Wandering, 1 = Forming, 2 = Holding, 3 = Breaking
     let currentState = 0;
     let stateTimer = 0;
-    let maxParticles = 400; 
+    let maxParticles = 600; 
     let textOpacity = 0;
     const numWords = 7;
 
@@ -39,7 +39,7 @@ export default function NetworkBackground() {
       const offCtx = offscreen.getContext('2d');
       if (!offCtx) return;
 
-      fontSize = Math.min(width * 0.12, 120); 
+      fontSize = Math.min(width * 0.12, 100); 
       offCtx.fillStyle = 'white';
       offCtx.font = `900 ${fontSize}px "Arial", sans-serif`;
       offCtx.textAlign = 'center';
@@ -54,15 +54,15 @@ export default function NetworkBackground() {
           const index = (y * tw + x) * 4;
           const alpha = imageData[index + 3];
           if (alpha > 128) {
-            potentialTargets.push({ x: x - tw / 2, y: y - th / 2 }); // Center around 0,0
+            potentialTargets.push({ x: x - tw / 2, y: y - th / 2 });
           }
         }
       }
       
-      maxParticles = Math.min(Math.floor((width * height) / 4000), 500);
+      // Ensure we have enough particles for 7 words to be clearly visible
+      maxParticles = Math.max(500, Math.min(Math.floor((width * height) / 2000), 700));
       
       if (potentialTargets.length > 0) {
-        // We only need a fraction of targets to form the letters, the rest is handled by particle count
         const particlesPerWord = Math.floor(maxParticles / numWords);
         const step = Math.max(1, Math.floor(potentialTargets.length / particlesPerWord));
         for(let i = 0; i < potentialTargets.length; i += step) {
@@ -73,21 +73,40 @@ export default function NetworkBackground() {
 
     const randomizeLocations = () => {
        activeLocations = [];
+       // Divide screen into a 3x3 grid to guarantee spread and prevent overlapping
+       const cols = 3;
+       const rows = 3;
+       const cellW = width / cols;
+       const cellH = height / rows;
+       
+       let cells: {r: number, c: number}[] = [];
+       for(let r = 0; r < rows; r++) {
+           for(let c = 0; c < cols; c++) {
+               // Don't spawn in the very top-center or bottom-center if we can avoid it to keep it spread
+               cells.push({r, c});
+           }
+       }
+       
+       // Shuffle the grid cells
+       cells.sort(() => Math.random() - 0.5);
+       
        for (let i = 0; i < numWords; i++) {
+          const cell = cells[i % cells.length];
+          const cx = cell.c * cellW + cellW / 2;
+          const cy = cell.r * cellH + cellH / 2;
+          
           activeLocations.push({
-             x: Math.random() * (width - 300) + 150, // Keep away from edges
-             y: Math.random() * (height - 200) + 100,
-             vx: (Math.random() - 0.5) * 1.5, // Slow drifting speed
+             x: cx + (Math.random() - 0.5) * (cellW * 0.4),
+             y: cy + (Math.random() - 0.5) * (cellH * 0.4),
+             vx: (Math.random() - 0.5) * 1.5,
              vy: (Math.random() - 0.5) * 1.5,
           });
        }
 
-       // Assign particles to locations
        const particlesPerWord = Math.floor(particles.length / numWords);
        particles.forEach((p, idx) => {
           p.locIndex = Math.min(Math.floor(idx / particlesPerWord), numWords - 1);
           if (relativeTargets.length > 0) {
-              // Now each word gets a consecutive chunk of particles, covering all relative targets!
               const rt = relativeTargets[idx % relativeTargets.length];
               p.relativeX = rt.x;
               p.relativeY = rt.y;
@@ -135,17 +154,16 @@ export default function NetworkBackground() {
           const targetY = loc.y + this.relativeY;
           
           if (state === 1) {
-             this.x += (targetX - this.x) * 0.1; // Ease in
-             this.y += (targetY - this.y) * 0.1;
+             this.x += (targetX - this.x) * 0.12; 
+             this.y += (targetY - this.y) * 0.12;
           } else {
-             // Hold tight but still follow the drifting target
              this.x = targetX + (Math.random() - 0.5) * 1;
              this.y = targetY + (Math.random() - 0.5) * 1;
           }
         }
       }
 
-      draw(state: number) {
+      draw() {
         if (!ctx) return;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
@@ -168,7 +186,6 @@ export default function NetworkBackground() {
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // State Machine Logic
       stateTimer++;
       if (currentState === 0 && stateTimer > 300) { 
         currentState = 1;
@@ -177,11 +194,11 @@ export default function NetworkBackground() {
       } else if (currentState === 1 && stateTimer > 120) { 
         currentState = 2;
         stateTimer = 0;
-      } else if (currentState === 2 && stateTimer > 240) { // Hold longer (4s)
+      } else if (currentState === 2 && stateTimer > 240) { 
         currentState = 3;
         stateTimer = 0;
         particles.forEach(p => {
-          p.vx = (Math.random() - 0.5) * 15; // Faster explosion
+          p.vx = (Math.random() - 0.5) * 15; 
           p.vy = (Math.random() - 0.5) * 15;
         });
       } else if (currentState === 3 && stateTimer > 40) { 
@@ -193,24 +210,20 @@ export default function NetworkBackground() {
         });
       }
 
-      // Update drifting locations
       if (currentState === 1 || currentState === 2) {
          activeLocations.forEach(loc => {
             loc.x += loc.vx;
             loc.y += loc.vy;
-            // Bounce off invisible margins
             if (loc.x < 100 || loc.x > width - 100) loc.vx *= -1;
             if (loc.y < 100 || loc.y > height - 100) loc.vy *= -1;
          });
       }
 
-      // Handle text hologram opacity
       if (currentState === 1) textOpacity = Math.min(1, textOpacity + 0.02);
       else if (currentState === 2) textOpacity = 1;
       else if (currentState === 3) textOpacity = Math.max(0, textOpacity - 0.05);
       else textOpacity = 0;
 
-      // Draw Holographic Text behind particles
       if (textOpacity > 0 && activeLocations.length > 0) {
         ctx.font = `900 ${fontSize}px "Arial", sans-serif`;
         ctx.textAlign = 'center';
@@ -226,15 +239,14 @@ export default function NetworkBackground() {
           ctx.fillText('AIO', loc.x, loc.y);
           ctx.strokeText('AIO', loc.x, loc.y);
         });
-        ctx.shadowBlur = 0; // reset
+        ctx.shadowBlur = 0; 
       }
 
       for (let i = 0; i < particles.length; i++) {
         particles[i].update(currentState);
-        particles[i].draw(currentState);
+        particles[i].draw();
 
         for (let j = i + 1; j < particles.length; j++) {
-          // Optimization: only draw connections between particles of the same word when forming
           if ((currentState === 1 || currentState === 2) && particles[i].locIndex !== particles[j].locIndex) {
               continue;
           }
