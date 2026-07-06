@@ -19,11 +19,14 @@ export default function NetworkBackground() {
 
     let particles: Particle[] = [];
     let targets: {x: number, y: number}[] = [];
+    let locations: {x: number, y: number}[] = [];
+    let fontSize = 100;
     
     // Animation States: 0 = Wandering, 1 = Forming, 2 = Holding, 3 = Breaking
     let currentState = 0;
     let stateTimer = 0;
-    let maxParticles = 300; // Allow a bit more for multiple words
+    let maxParticles = 400; // More particles for better shape
+    let textOpacity = 0;
 
     const getTextTargets = () => {
       targets = [];
@@ -33,14 +36,14 @@ export default function NetworkBackground() {
       const offCtx = offscreen.getContext('2d');
       if (!offCtx) return;
 
-      const fontSize = Math.min(width * 0.15, 180); // Smaller font for multiple words
+      fontSize = Math.min(width * 0.15, 180); 
       offCtx.fillStyle = 'white';
       offCtx.font = `900 ${fontSize}px "Arial", sans-serif`;
       offCtx.textAlign = 'center';
       offCtx.textBaseline = 'middle';
       
       // Draw AIO in multiple locations
-      const locations = [
+      locations = [
         { x: width * 0.2, y: height * 0.25 },
         { x: width * 0.8, y: height * 0.25 },
         { x: width * 0.2, y: height * 0.75 },
@@ -65,11 +68,9 @@ export default function NetworkBackground() {
         }
       }
       
-      // We want to limit particles but ensure enough density for clarity
-      maxParticles = Math.min(Math.floor((width * height) / 5000), 300);
+      maxParticles = Math.min(Math.floor((width * height) / 4000), 500);
       
       if (potentialTargets.length > 0) {
-        // Pick evenly distributed targets
         const step = Math.max(1, Math.floor(potentialTargets.length / maxParticles));
         for(let i = 0; i < potentialTargets.length; i += step) {
            targets.push(potentialTargets[i]);
@@ -93,10 +94,10 @@ export default function NetworkBackground() {
         this.y = Math.random() * height;
         this.vx = (Math.random() - 0.5) * 1.5;
         this.vy = (Math.random() - 0.5) * 1.5;
-        this.radius = Math.random() * 2 + 1.5; // Slightly larger particles for clarity
+        this.radius = Math.random() * 2 + 1.5;
         this.targetX = this.x;
         this.targetY = this.y;
-        this.color = Math.random() > 0.5 ? 'rgba(0, 243, 255, 0.8)' : 'rgba(255, 0, 255, 0.8)';
+        this.color = Math.random() > 0.5 ? 'rgba(0, 243, 255, 0.9)' : 'rgba(255, 0, 255, 0.9)';
       }
 
       assignTarget(target: {x: number, y: number}) {
@@ -106,7 +107,6 @@ export default function NetworkBackground() {
 
       update(state: number) {
         if (state === 0 || state === 3) {
-          // Wandering or Breaking
           this.x += this.vx;
           this.y += this.vy;
 
@@ -116,14 +116,12 @@ export default function NetworkBackground() {
           if (this.y > height) { this.y = height; this.vy = -this.vy; }
           
         } else if (state === 1) {
-          // Forming AIO (ease in faster)
           const dx = this.targetX - this.x;
           const dy = this.targetY - this.y;
-          this.x += dx * 0.08;
-          this.y += dy * 0.08;
+          this.x += dx * 0.1; // Move faster to target
+          this.y += dy * 0.1;
         } else if (state === 2) {
-          // Holding form with slight jitter
-          this.x = this.targetX + (Math.random() - 0.5) * 1; // Reduced jitter for clarity
+          this.x = this.targetX + (Math.random() - 0.5) * 1;
           this.y = this.targetY + (Math.random() - 0.5) * 1;
         }
       }
@@ -132,14 +130,7 @@ export default function NetworkBackground() {
         if (!ctx) return;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        
-        // Increase opacity when forming/holding for better clarity
-        if (state === 1 || state === 2) {
-          ctx.fillStyle = this.color.replace('0.8', '1');
-        } else {
-          ctx.fillStyle = this.color;
-        }
-        
+        ctx.fillStyle = this.color;
         ctx.fill();
       }
     }
@@ -166,21 +157,20 @@ export default function NetworkBackground() {
 
       // State Machine Logic
       stateTimer++;
-      if (currentState === 0 && stateTimer > 300) { // Wander
+      if (currentState === 0 && stateTimer > 300) { 
         currentState = 1;
         stateTimer = 0;
-      } else if (currentState === 1 && stateTimer > 120) { // Form
+      } else if (currentState === 1 && stateTimer > 120) { 
         currentState = 2;
         stateTimer = 0;
-      } else if (currentState === 2 && stateTimer > 180) { // Hold
+      } else if (currentState === 2 && stateTimer > 180) { 
         currentState = 3;
         stateTimer = 0;
-        // Break randomly
         particles.forEach(p => {
-          p.vx = (Math.random() - 0.5) * 10;
-          p.vy = (Math.random() - 0.5) * 10;
+          p.vx = (Math.random() - 0.5) * 15; // Faster explosion
+          p.vy = (Math.random() - 0.5) * 15;
         });
-      } else if (currentState === 3 && stateTimer > 30) { // Break duration
+      } else if (currentState === 3 && stateTimer > 40) { 
         currentState = 0;
         stateTimer = 0;
         particles.forEach(p => {
@@ -189,18 +179,41 @@ export default function NetworkBackground() {
         });
       }
 
+      // Handle text hologram opacity
+      if (currentState === 1) textOpacity = Math.min(1, textOpacity + 0.02);
+      else if (currentState === 2) textOpacity = 1;
+      else if (currentState === 3) textOpacity = Math.max(0, textOpacity - 0.05);
+      else textOpacity = 0;
+
+      // Draw Holographic Text behind particles
+      if (textOpacity > 0 && locations.length > 0) {
+        ctx.font = `900 ${fontSize}px "Arial", sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.lineWidth = 2;
+        
+        locations.forEach(loc => {
+          ctx.shadowBlur = 20;
+          ctx.shadowColor = `rgba(0, 243, 255, ${textOpacity})`;
+          ctx.fillStyle = `rgba(0, 243, 255, ${textOpacity * 0.1})`; 
+          ctx.strokeStyle = `rgba(0, 243, 255, ${textOpacity * 0.8})`;
+          
+          ctx.fillText('AIO', loc.x, loc.y);
+          ctx.strokeText('AIO', loc.x, loc.y);
+        });
+        ctx.shadowBlur = 0; // reset
+      }
+
       for (let i = 0; i < particles.length; i++) {
         particles[i].update(currentState);
         particles[i].draw(currentState);
 
-        // Draw connections
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          // Connections logic
-          let connectDist = currentState === 1 || currentState === 2 ? 25 : 90;
+          let connectDist = currentState === 1 || currentState === 2 ? 20 : 90;
 
           if (distance < connectDist) {
             ctx.beginPath();
@@ -209,15 +222,13 @@ export default function NetworkBackground() {
             
             let alpha = 0;
             if (currentState === 1 || currentState === 2) {
-                // When forming, lines are brighter but shorter to form clear text
-                alpha = 0.8 - distance / connectDist;
+                alpha = 0.6 - distance / connectDist;
             } else {
-                // When wandering, lines are softer
-                alpha = 0.5 - distance / connectDist;
+                alpha = 0.4 - distance / connectDist;
             }
                 
             ctx.strokeStyle = `rgba(0, 243, 255, ${alpha})`;
-            ctx.lineWidth = currentState === 1 || currentState === 2 ? 1.5 : 1;
+            ctx.lineWidth = 1;
             ctx.stroke();
           }
         }
