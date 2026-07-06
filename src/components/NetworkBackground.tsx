@@ -23,7 +23,7 @@ export default function NetworkBackground() {
     // Animation States: 0 = Wandering, 1 = Forming, 2 = Holding, 3 = Breaking
     let currentState = 0;
     let stateTimer = 0;
-    let maxParticles = 150;
+    let maxParticles = 300; // Allow a bit more for multiple words
 
     const getTextTargets = () => {
       targets = [];
@@ -33,12 +33,24 @@ export default function NetworkBackground() {
       const offCtx = offscreen.getContext('2d');
       if (!offCtx) return;
 
-      const fontSize = Math.min(width * 0.3, 400); // Larger font
+      const fontSize = Math.min(width * 0.15, 180); // Smaller font for multiple words
       offCtx.fillStyle = 'white';
       offCtx.font = `900 ${fontSize}px "Arial", sans-serif`;
       offCtx.textAlign = 'center';
       offCtx.textBaseline = 'middle';
-      offCtx.fillText('AIO', width / 2, height / 2);
+      
+      // Draw AIO in multiple locations
+      const locations = [
+        { x: width * 0.2, y: height * 0.25 },
+        { x: width * 0.8, y: height * 0.25 },
+        { x: width * 0.2, y: height * 0.75 },
+        { x: width * 0.8, y: height * 0.75 },
+        { x: width * 0.5, y: height * 0.5 } // Center
+      ];
+
+      locations.forEach(loc => {
+        offCtx.fillText('AIO', loc.x, loc.y);
+      });
 
       const imageData = offCtx.getImageData(0, 0, width, height).data;
       
@@ -53,8 +65,8 @@ export default function NetworkBackground() {
         }
       }
       
-      // Cap particles at 200 to prevent lag
-      maxParticles = Math.min(Math.floor((width * height) / 10000), 200);
+      // We want to limit particles but ensure enough density for clarity
+      maxParticles = Math.min(Math.floor((width * height) / 5000), 300);
       
       if (potentialTargets.length > 0) {
         // Pick evenly distributed targets
@@ -81,7 +93,7 @@ export default function NetworkBackground() {
         this.y = Math.random() * height;
         this.vx = (Math.random() - 0.5) * 1.5;
         this.vy = (Math.random() - 0.5) * 1.5;
-        this.radius = Math.random() * 2 + 1;
+        this.radius = Math.random() * 2 + 1.5; // Slightly larger particles for clarity
         this.targetX = this.x;
         this.targetY = this.y;
         this.color = Math.random() > 0.5 ? 'rgba(0, 243, 255, 0.8)' : 'rgba(255, 0, 255, 0.8)';
@@ -111,16 +123,23 @@ export default function NetworkBackground() {
           this.y += dy * 0.08;
         } else if (state === 2) {
           // Holding form with slight jitter
-          this.x = this.targetX + (Math.random() - 0.5) * 2;
-          this.y = this.targetY + (Math.random() - 0.5) * 2;
+          this.x = this.targetX + (Math.random() - 0.5) * 1; // Reduced jitter for clarity
+          this.y = this.targetY + (Math.random() - 0.5) * 1;
         }
       }
 
-      draw() {
+      draw(state: number) {
         if (!ctx) return;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
+        
+        // Increase opacity when forming/holding for better clarity
+        if (state === 1 || state === 2) {
+          ctx.fillStyle = this.color.replace('0.8', '1');
+        } else {
+          ctx.fillStyle = this.color;
+        }
+        
         ctx.fill();
       }
     }
@@ -172,7 +191,7 @@ export default function NetworkBackground() {
 
       for (let i = 0; i < particles.length; i++) {
         particles[i].update(currentState);
-        particles[i].draw();
+        particles[i].draw(currentState);
 
         // Draw connections
         for (let j = i + 1; j < particles.length; j++) {
@@ -180,20 +199,25 @@ export default function NetworkBackground() {
           const dy = particles[i].y - particles[j].y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          // Use smaller connection distance to prevent web of lines and lag
-          let connectDist = currentState === 1 || currentState === 2 ? 30 : 100;
+          // Connections logic
+          let connectDist = currentState === 1 || currentState === 2 ? 25 : 90;
 
           if (distance < connectDist) {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
             
-            const alpha = currentState === 1 || currentState === 2 
-                ? 0.4 - distance / connectDist
-                : 0.8 - distance / connectDist;
+            let alpha = 0;
+            if (currentState === 1 || currentState === 2) {
+                // When forming, lines are brighter but shorter to form clear text
+                alpha = 0.8 - distance / connectDist;
+            } else {
+                // When wandering, lines are softer
+                alpha = 0.5 - distance / connectDist;
+            }
                 
             ctx.strokeStyle = `rgba(0, 243, 255, ${alpha})`;
-            ctx.lineWidth = 1;
+            ctx.lineWidth = currentState === 1 || currentState === 2 ? 1.5 : 1;
             ctx.stroke();
           }
         }
