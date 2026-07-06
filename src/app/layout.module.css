@@ -74,14 +74,16 @@
 }
 
 .navLinks a {
-  color: var(--color-white);
-  font-weight: 500;
-  transition: color 0.2s ease;
-  font-size: 1rem;
+  color: #ffffff;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
 }
 
 .navLinks a:hover {
-  color: var(--color-primary-yellow);
+  color: var(--color-primary);
+  text-shadow: 0 0 8px rgba(0, 243, 255, 0.8);
 }
 
 .hamburger {
