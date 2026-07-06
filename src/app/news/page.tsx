@@ -48,22 +48,24 @@ export default function News() {
               <div style={{ 
                 display: 'flex',
                 flexDirection: 'column',
-                border: '1px solid var(--color-gray-200)', 
+                border: '1px solid rgba(0, 243, 255, 0.2)', 
+                borderTop: '4px solid var(--color-primary)',
                 borderRadius: '12px', 
                 overflow: 'hidden',
-                backgroundColor: 'white',
-                boxShadow: '0 4px 15px rgba(0,0,0,0.05)',
+                background: 'rgba(10, 15, 30, 0.7)',
+                backdropFilter: 'blur(10px)',
+                boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                 height: '100%',
                 cursor: 'pointer'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-5px)';
-                e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.1)';
+                e.currentTarget.style.boxShadow = '0 10px 25px rgba(0, 243, 255, 0.4)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.05)';
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
               }}
               >
                 {item.image_url && (
