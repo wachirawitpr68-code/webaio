@@ -27,8 +27,8 @@ export default function Contact() {
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
               <span style={{ fontSize: '1.5rem', lineHeight: '1' }}>✉️</span>
               <div>
-                <a href="mailto:contact@aiolab.ubu.ac.th" style={{ color: 'var(--color-accent)', fontWeight: '500' }}>
-                  contact@aiolab.ubu.ac.th
+                <a href="mailto:aiolabubu@gmail.com" style={{ color: 'var(--color-accent)', fontWeight: '500' }}>
+                  aiolabubu@gmail.com
                 </a>
               </div>
             </div>
