@@ -83,9 +83,11 @@ export default function NetworkBackground() {
        }
 
        // Assign particles to locations
+       const particlesPerWord = Math.floor(particles.length / numWords);
        particles.forEach((p, idx) => {
-          p.locIndex = idx % numWords;
+          p.locIndex = Math.min(Math.floor(idx / particlesPerWord), numWords - 1);
           if (relativeTargets.length > 0) {
+              // Now each word gets a consecutive chunk of particles, covering all relative targets!
               const rt = relativeTargets[idx % relativeTargets.length];
               p.relativeX = rt.x;
               p.relativeY = rt.y;
