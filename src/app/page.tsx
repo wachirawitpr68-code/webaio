@@ -45,6 +45,23 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Team Image Section */}
+      <section style={{ padding: '2rem 1rem', background: 'transparent' }}>
+        <div className="container" style={{ display: 'flex', justifyContent: 'center' }}>
+          <img 
+            src="/team.png" 
+            alt="AIO Lab Team" 
+            style={{ 
+              maxWidth: '100%', 
+              height: 'auto', 
+              borderRadius: '24px', 
+              boxShadow: '0 20px 40px rgba(0, 243, 255, 0.15)',
+              border: '2px solid rgba(0, 243, 255, 0.3)'
+            }} 
+          />
+        </div>
+      </section>
+
       {/* About Section */}
       <section className={styles.sectionLight}>
         <div className="container">
