@@ -23,7 +23,7 @@ export default function Admin() {
     name_th: "", name_en: "", 
     position_th: "", position_en: "", 
     bio_th: "", bio_en: "", 
-    scholar_link: "", image_url: "", university: "", province: ""
+    scholar_link: "", image_url: "", university: "", province: "", email: ""
   });
   const [resFile, setResFile] = useState<File | null>(null);
   const resFileInputRef = useRef<HTMLInputElement>(null);
@@ -131,14 +131,14 @@ export default function Admin() {
       name_th: r.name_th || r.name || "", name_en: r.name_en || "",
       position_th: r.position_th || r.position || "", position_en: r.position_en || "",
       bio_th: r.bio_th || r.bio || "", bio_en: r.bio_en || "",
-      scholar_link: r.scholar_link || "", image_url: r.image_url || "", university: r.university || "", province: r.province || ""
+      scholar_link: r.scholar_link || "", image_url: r.image_url || "", university: r.university || "", province: r.province || "", email: r.email || ""
     });
     setResFile(null);
   };
 
   const resetResForm = () => {
     setEditingResId(null);
-    setResFormData({ name_th: "", name_en: "", position_th: "", position_en: "", bio_th: "", bio_en: "", scholar_link: "", image_url: "", university: "", province: "" });
+    setResFormData({ name_th: "", name_en: "", position_th: "", position_en: "", bio_th: "", bio_en: "", scholar_link: "", image_url: "", university: "", province: "", email: "" });
     setResFile(null);
   };
 
@@ -355,6 +355,7 @@ export default function Admin() {
                 </datalist>
               </div>
               <input type="text" placeholder="ลิงก์ Google Scholar" value={resFormData.scholar_link} onChange={e => setResFormData({...resFormData, scholar_link: e.target.value})} style={inputStyle} disabled={loading} />
+              <input type="email" placeholder="อีเมล (Email)" value={resFormData.email} onChange={e => setResFormData({...resFormData, email: e.target.value})} style={inputStyle} disabled={loading} />
               
               <div style={{ marginTop: '0.5rem' }}>
                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>รูปภาพนักวิจัย</label>
