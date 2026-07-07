@@ -49,7 +49,7 @@ export default function Home() {
       <section style={{ padding: '2rem 1rem', background: 'transparent' }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'center' }}>
           <img 
-            src="/team.png" 
+            src="/team.jpg" 
             alt="AIO Lab Team" 
             style={{ 
               maxWidth: '100%', 
