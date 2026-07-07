@@ -27,6 +27,12 @@ export default function Admin() {
     setCroppingTarget(target);
     setIsCropping(true);
   };
+  const handleStartCropUrl = (url: string, target: 'researchers' | 'news') => {
+    setImageToCrop(url);
+    setCroppingTarget(target);
+    setIsCropping(true);
+  };
+
   
   const handleCropComplete = (croppedFile: File) => {
     if (croppingTarget === 'researchers') {
