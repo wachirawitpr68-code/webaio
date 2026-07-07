@@ -80,7 +80,7 @@ export default function Map({ researchers }: MapProps) {
               <Popup>
                 <div style={{ padding: '5px', textAlign: 'center', background: 'transparent' }}>
                   <h3 style={{ color: '#00f3ff', marginBottom: '10px', fontSize: '1.2rem', borderBottom: '1px solid #00f3ff', paddingBottom: '5px' }}>
-                    {provinceName}
+                    {language === 'en' ? provinceData.name_en : provinceData.name}
                   </h3>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     {resList.map((r: any) => (
