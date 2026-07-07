@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { supabase } from "../../lib/supabaseClient";
 import { useLanguage } from "../../context/LanguageContext";
 import { PROVINCES } from "../../data/provinces";
+import ImageCropper from "../../components/ImageCropper";
 
 type Tab = 'researchers' | 'news';
 
@@ -15,6 +16,35 @@ export default function Admin() {
   
   const [activeTab, setActiveTab] = useState<Tab>('researchers');
   const [loading, setLoading] = useState(false);
+  // Cropper State
+  const [isCropping, setIsCropping] = useState(false);
+  const [imageToCrop, setImageToCrop] = useState<string>("");
+  const [croppingTarget, setCroppingTarget] = useState<'researchers' | 'news'>('researchers');
+  
+  const handleStartCrop = (file: File, target: 'researchers' | 'news') => {
+    const url = URL.createObjectURL(file);
+    setImageToCrop(url);
+    setCroppingTarget(target);
+    setIsCropping(true);
+  };
+  
+  const handleCropComplete = (croppedFile: File) => {
+    if (croppingTarget === 'researchers') {
+      setResFile(croppedFile);
+      setResFormData(prev => ({...prev, image_url: ""}));
+    } else {
+      setNewsFile(croppedFile);
+      setNewsFormData(prev => ({...prev, image_url: ""}));
+    }
+    setIsCropping(false);
+    setImageToCrop("");
+  };
+  
+  const handleCropCancel = () => {
+    setIsCropping(false);
+    setImageToCrop("");
+  };
+
 
   // Researchers state
   const [researchers, setResearchers] = useState<any[]>([]);
@@ -59,13 +89,7 @@ export default function Admin() {
         if (items[i].type.indexOf('image') !== -1) {
           const file = items[i].getAsFile();
           if (file) {
-            if (activeTab === 'researchers') {
-              setResFile(file);
-              setResFormData(prev => ({...prev, image_url: ""}));
-            } else if (activeTab === 'news') {
-              setNewsFile(file);
-              setNewsFormData(prev => ({...prev, image_url: ""}));
-            }
+            handleStartCrop(file, activeTab);
             e.preventDefault();
             break;
           }
@@ -278,13 +302,12 @@ export default function Admin() {
     );
   }
 
-  const renderFileUploader = (file: File | null, imageUrl: string, setFile: (f: File | null) => void, setFormDataUrl: (url: string) => void, fileInputRef: React.RefObject<HTMLInputElement | null>) => {
+  const renderFileUploader = (file: File | null, imageUrl: string, target: 'researchers' | 'news', fileInputRef: React.RefObject<HTMLInputElement | null>) => {
     const handleDragOver = (e: React.DragEvent) => e.preventDefault();
     const handleDrop = (e: React.DragEvent) => {
       e.preventDefault();
       if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-        setFile(e.dataTransfer.files[0]);
-        setFormDataUrl(""); // clear existing url
+        handleStartCrop(e.dataTransfer.files[0], target);
       }
     };
     
@@ -311,8 +334,8 @@ export default function Admin() {
           style={{ display: 'none' }} 
           onChange={(e) => {
             if (e.target.files && e.target.files[0]) {
-              setFile(e.target.files[0]);
-              setFormDataUrl("");
+              handleStartCrop(e.target.files[0], target);
+              e.target.value = ''; // Reset input
             }
           }} 
         />
@@ -342,6 +365,14 @@ export default function Admin() {
 
   return (
     <div style={{ padding: '3rem 1rem', maxWidth: '1200px', margin: '0 auto' }}>
+      {isCropping && (
+        <ImageCropper 
+          imageSrc={imageToCrop} 
+          onCropCompleteAction={handleCropComplete} 
+          onCancel={handleCropCancel} 
+        />
+      )}
+
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2.5rem', color: 'var(--color-primary)' }}>Admin Dashboard</h1>
         <button onClick={() => setIsLoggedIn(false)} className="btn btn-danger">ออกจากระบบ</button>
@@ -406,7 +437,7 @@ export default function Admin() {
               
               <div style={{ marginTop: '0.5rem' }}>
                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>รูปภาพนักวิจัย</label>
-                {renderFileUploader(resFile, resFormData.image_url, setResFile, (url) => setResFormData({...resFormData, image_url: url}), resFileInputRef)}
+                {renderFileUploader(resFile, resFormData.image_url, 'researchers', resFileInputRef)}
               </div>
 
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
@@ -425,7 +456,7 @@ export default function Admin() {
               
               <div style={{ marginTop: '0.5rem' }}>
                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>รูปภาพประกอบข่าวสาร</label>
-                {renderFileUploader(newsFile, newsFormData.image_url, setNewsFile, (url) => setNewsFormData({...newsFormData, image_url: url}), newsFileInputRef)}
+                {renderFileUploader(newsFile, newsFormData.image_url, 'news', newsFileInputRef)}
               </div>
               
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
