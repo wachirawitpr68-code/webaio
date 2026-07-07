@@ -7,11 +7,11 @@ export default function Contact() {
 
   return (
     <div style={{ padding: '5rem 1rem', maxWidth: '1200px', margin: '0 auto', minHeight: '70vh' }}>
-      <h1 style={{ fontSize: '3rem', marginBottom: '3rem', color: 'var(--color-primary)' }}>{t('contact.title')}</h1>
       <div className="responsive-grid-contact">
         
         {/* Contact Info */}
         <div>
+          <h1 style={{ fontSize: '3rem', marginBottom: '3rem', color: 'var(--color-primary)' }}>{t('contact.title')}</h1>
           <h2 style={{ fontSize: '2rem', marginBottom: '2rem', color: 'var(--color-primary)' }}>{t('contact.info')}</h2>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
