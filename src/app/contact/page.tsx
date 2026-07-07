@@ -48,16 +48,19 @@ export default function Contact() {
         </div>
 
         {/* Google Map Embed */}
-        <div style={{ backgroundColor: 'var(--color-gray-50)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--color-gray-200)' }}>
-          <iframe
-            src="https://maps.google.com/maps?q=คณะวิศวกรรมศาสตร์%20มหาวิทยาลัยอุบลราชธานี&t=&z=15&ie=UTF8&iwloc=&output=embed"
-            width="100%"
-            height="100%"
-            style={{ border: 0, borderRadius: '8px', minHeight: '350px' }}
-            allowFullScreen={true}
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-          ></iframe>
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+          <h2 style={{ fontSize: '2rem', marginBottom: '2rem', color: 'var(--color-primary)' }}>แผนที่ที่ตั้ง (Location Map)</h2>
+          <div style={{ backgroundColor: 'var(--color-gray-50)', padding: '1rem', borderRadius: '12px', border: '1px solid var(--color-gray-200)', flex: 1, display: 'flex', flexDirection: 'column', minHeight: '450px' }}>
+            <iframe
+              src="https://maps.google.com/maps?q=คณะวิศวกรรมศาสตร์%20มหาวิทยาลัยอุบลราชธานี&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0, borderRadius: '8px', flex: 1 }}
+              allowFullScreen={true}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
         </div>
         
       </div>
