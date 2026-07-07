@@ -23,7 +23,7 @@ export default function Admin() {
     name_th: "", name_en: "", 
     position_th: "", position_en: "", 
     bio_th: "", bio_en: "", 
-    scholar_link: "", image_url: "", university: "", province: "", email: ""
+    scholar_link: "", image_url: "", university_th: "", university_en: "", province: "", email: ""
   });
   const [resFile, setResFile] = useState<File | null>(null);
   const resFileInputRef = useRef<HTMLInputElement>(null);
@@ -131,14 +131,14 @@ export default function Admin() {
       name_th: r.name_th || r.name || "", name_en: r.name_en || "",
       position_th: r.position_th || r.position || "", position_en: r.position_en || "",
       bio_th: r.bio_th || r.bio || "", bio_en: r.bio_en || "",
-      scholar_link: r.scholar_link || "", image_url: r.image_url || "", university: r.university || "", province: r.province || "", email: r.email || ""
+      scholar_link: r.scholar_link || "", image_url: r.image_url || "", university_th: r.university_th || r.university || "", university_en: r.university_en || "", province: r.province || "", email: r.email || ""
     });
     setResFile(null);
   };
 
   const resetResForm = () => {
     setEditingResId(null);
-    setResFormData({ name_th: "", name_en: "", position_th: "", position_en: "", bio_th: "", bio_en: "", scholar_link: "", image_url: "", university: "", province: "", email: "" });
+    setResFormData({ name_th: "", name_en: "", position_th: "", position_en: "", bio_th: "", bio_en: "", scholar_link: "", image_url: "", university_th: "", university_en: "", province: "", email: "" });
     setResFile(null);
   };
 
@@ -338,7 +338,10 @@ export default function Admin() {
               </div>
               <textarea placeholder="ประวัติย่อ (TH)" rows={3} value={resFormData.bio_th} onChange={e => setResFormData({...resFormData, bio_th: e.target.value})} style={inputStyle} disabled={loading} />
               <textarea placeholder="Bio (EN)" rows={3} value={resFormData.bio_en} onChange={e => setResFormData({...resFormData, bio_en: e.target.value})} style={inputStyle} disabled={loading} />
-              <input type="text" placeholder="มหาวิทยาลัย (University)" value={resFormData.university} onChange={e => setResFormData({...resFormData, university: e.target.value})} style={inputStyle} disabled={loading} />
+              <div style={{display: 'flex', gap: '1rem'}}>
+                <input type="text" placeholder="มหาวิทยาลัย (TH)" value={resFormData.university_th} onChange={e => setResFormData({...resFormData, university_th: e.target.value})} style={inputStyle} disabled={loading} />
+                <input type="text" placeholder="University (EN)" value={resFormData.university_en} onChange={e => setResFormData({...resFormData, university_en: e.target.value})} style={inputStyle} disabled={loading} />
+              </div>
               <div style={{ position: 'relative' }}>
                 <input 
                   list="provinces-list" 

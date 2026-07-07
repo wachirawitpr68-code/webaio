@@ -5,6 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { PROVINCES } from '../data/provinces';
+import { useLanguage } from '../context/LanguageContext';
 
 // Fix for default leaflet icons in Next.js
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -19,6 +20,8 @@ interface MapProps {
 }
 
 export default function Map({ researchers }: MapProps) {
+  const { language } = useLanguage();
+
   // Center map on Thailand
   const center: [number, number] = [13.7563, 100.5018];
   const zoom = 6;
@@ -84,8 +87,12 @@ export default function Map({ researchers }: MapProps) {
                       <div key={r.id} style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(0,0,0,0.5)', padding: '8px', borderRadius: '8px' }}>
                         <img src={r.image_url || avatarUrl} style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover', border: '1px solid #ff00ff' }} />
                         <div style={{ textAlign: 'left' }}>
-                          <div style={{ color: 'white', fontWeight: 'bold' }}>{r.name_th || r.name}</div>
-                          <div style={{ color: '#aaa', fontSize: '0.8rem' }}>{r.university || 'AIO LAB'}</div>
+                          <div style={{ color: 'white', fontWeight: 'bold' }}>{language === 'en' ? (r.name_en || r.name) : (r.name_th || r.name)}</div>
+                          <div style={{ color: '#aaa', fontSize: '0.8rem' }}>
+                            {language === 'en' 
+                              ? (r.university_en || r.university || 'AIO LAB') 
+                              : (r.university_th || r.university || 'AIO LAB')}
+                          </div>
                         </div>
                       </div>
                     ))}
