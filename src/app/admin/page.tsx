@@ -46,6 +46,37 @@ export default function Admin() {
     }
   }, [isLoggedIn, activeTab]);
 
+  // Handle Paste Image anywhere on the page
+  useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+      if (!isLoggedIn) return;
+      
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf('image') !== -1) {
+          const file = items[i].getAsFile();
+          if (file) {
+            if (activeTab === 'researchers') {
+              setResFile(file);
+              setResFormData(prev => ({...prev, image_url: ""}));
+            } else if (activeTab === 'news') {
+              setNewsFile(file);
+              setNewsFormData(prev => ({...prev, image_url: ""}));
+            }
+            e.preventDefault();
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('paste', handlePaste);
+    return () => window.removeEventListener('paste', handlePaste);
+  }, [isLoggedIn, activeTab]);
+
+
   const fetchResearchers = async () => {
     setLoading(true);
     const { data, error } = await supabase.from('researchers').select('*').order('id', { ascending: true });
@@ -300,7 +331,7 @@ export default function Admin() {
             <svg style={{ width: '40px', height: '40px', marginBottom: '1rem', color: 'var(--color-primary)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
             </svg>
-            <p style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>คลิกเพื่อเลือกไฟล์ หรือ ลากไฟล์มาวางที่นี่</p>
+            <p style={{ fontWeight: 'bold', marginBottom: '0.5rem' }}>คลิก, ลากมาวาง หรือ กด Ctrl+V (วางรูป) ที่นี่</p>
             <p style={{ fontSize: '0.9rem' }}>รองรับไฟล์ JPG, PNG, GIF</p>
           </div>
         )}
