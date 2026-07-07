@@ -199,6 +199,18 @@ export default function Admin() {
   };
 
 
+  const checkMissingFields = (r: any) => {
+    const missing = [];
+    if (!r.name_th && !r.name) missing.push("ชื่อ-นามสกุล (TH)");
+    if (!r.name_en) missing.push("Name (EN)");
+    if (!r.university_th && !r.university) missing.push("มหาวิทยาลัย (TH)");
+    if (!r.university_en) missing.push("University (EN)");
+    if (!r.province) missing.push("จังหวัด (Province)");
+    if (!r.scholar_link) missing.push("ลิงก์ Google Scholar");
+    if (!r.email) missing.push("อีเมล (Email)");
+    return missing;
+  };
+
   const { t } = useLanguage();
 
   if (!isLoggedIn) {
@@ -409,7 +421,33 @@ export default function Admin() {
                       <h3 style={{ fontSize: '1.1rem', color: 'var(--color-primary)' }}>{r.name_th || r.name} <span style={{fontSize:'0.9rem', color:'#888'}}>({r.name_en})</span></h3>
                       <p style={{ color: 'var(--color-secondary)', fontSize: '0.9rem' }}>{r.position_th || r.position}</p>
                     </div>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                      {(() => {
+                        const missing = checkMissingFields(r);
+                        if (missing.length === 0) {
+                          return <span title="ข้อมูลครบถ้วน" style={{ fontSize: '1.5rem', cursor: 'help' }}>✅</span>;
+                        } else {
+                          return (
+                            <span 
+                              title={`ข้อมูลที่ยังขาด:\n- ${missing.join('\n- ')}`} 
+                              style={{ 
+                                fontSize: '1.5rem', 
+                                cursor: 'help', 
+                                background: 'rgba(255, 0, 0, 0.2)', 
+                                borderRadius: '50%', 
+                                width: '30px', 
+                                height: '30px', 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'center',
+                                border: '1px solid red'
+                              }}
+                            >
+                              ⚠️
+                            </span>
+                          );
+                        }
+                      })()}
                       <button onClick={() => editResItem(r)} className="btn btn-warning" style={{ padding: '0.4rem 0.8rem', fontSize: '0.9rem' }} disabled={loading}>แก้ไข</button>
                       <button onClick={() => handleDeleteRes(r.id)} className="btn btn-danger" style={{ padding: '0.4rem 0.8rem', fontSize: '0.9rem' }} disabled={loading}>ลบ</button>
                     </div>
