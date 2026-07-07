@@ -19,6 +19,7 @@ export default function Admin() {
   // Researchers state
   const [researchers, setResearchers] = useState<any[]>([]);
   const [editingResId, setEditingResId] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const [resFormData, setResFormData] = useState({
     name_th: "", name_en: "", 
     position_th: "", position_en: "", 
@@ -442,11 +443,35 @@ export default function Admin() {
           <h2 style={{ marginBottom: '1.5rem', color: 'var(--color-primary)' }}>
             {activeTab === 'researchers' ? 'รายชื่อผู้วิจัยทั้งหมด' : 'รายการข่าวสารทั้งหมด'}
           </h2>
+          {activeTab === 'researchers' && (
+            <div style={{ marginBottom: '1.5rem' }}>
+              <input 
+                type="text" 
+                placeholder="🔍 ค้นหาชื่อนักวิจัย (ไทย/อังกฤษ)..." 
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '1rem 1rem 1rem 2.5rem',
+                  border: '1px solid rgba(0, 243, 255, 0.5)',
+                  borderRadius: '30px',
+                  fontSize: '1.1rem',
+                  background: 'rgba(10, 15, 30, 0.8)',
+                  color: '#fff',
+                  boxShadow: '0 0 10px rgba(0, 243, 255, 0.2)'
+                }}
+              />
+            </div>
+          )}
+
           
           {activeTab === 'researchers' ? (
             loading && researchers.length === 0 ? <p>กำลังโหลดข้อมูล...</p> : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                {researchers.map(r => (
+                {researchers.filter(r => 
+                  (r.name_th || r.name || "").toLowerCase().includes(searchQuery.toLowerCase()) || 
+                  (r.name_en || "").toLowerCase().includes(searchQuery.toLowerCase())
+                ).map(r => (
                   <div key={r.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem', border: '1px solid var(--color-gray-200)', borderRadius: '8px', background: 'rgba(10, 15, 30, 0.5)' }}>
                     <div>
                       <h3 style={{ fontSize: '1.1rem', color: 'var(--color-primary)' }}>{r.name_th || r.name} <span style={{fontSize:'0.9rem', color:'#888'}}>({r.name_en})</span></h3>
