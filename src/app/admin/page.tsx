@@ -352,6 +352,29 @@ export default function Admin() {
               alt="Preview" 
               style={{ maxWidth: '100%', maxHeight: '200px', objectFit: 'contain', borderRadius: '8px', marginBottom: '1rem' }} 
             />
+            {!file && imageUrl && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleStartCropUrl(imageUrl, target);
+                }}
+                style={{
+                  position: 'absolute',
+                  top: '10px',
+                  right: '10px',
+                  background: 'rgba(0, 0, 0, 0.7)',
+                  color: 'white',
+                  border: '1px solid var(--color-primary)',
+                  borderRadius: '5px',
+                  padding: '5px 10px',
+                  cursor: 'pointer',
+                  zIndex: 10
+                }}
+              >
+                ✂️ ครอปรูปเดิม
+              </button>
+            )}
             <p style={{ color: 'var(--color-secondary)', fontSize: '0.9rem' }}>
               คลิกหรือลากไฟล์มาวางเพื่อเปลี่ยนรูปภาพ
             </p>
