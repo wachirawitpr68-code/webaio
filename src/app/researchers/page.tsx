@@ -63,7 +63,7 @@ export default function Researchers() {
             e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 243, 255, 0.3)';
           }}
         >
-          📍 แล้วนักวิจัยของเราอยู่ไหนบ้าง?
+          {language === 'en' ? '📍 Where are our researchers?' : '📍 แล้วนักวิจัยของเราอยู่ไหนบ้าง?'}
         </button>
       
       </section>
